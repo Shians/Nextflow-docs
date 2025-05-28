@@ -276,18 +276,20 @@ Use `mix` to merge multiple data sources into a single stream for unified proces
     - `channels` (required): Two or more channels to merge.
 
 ```groovy
-Channel
-    .mix(Channel.of(1, 2), Channel.of(3, 4))
+Channel.of(1, 2)
+    .mix(Channel.of(3, 4))
     .view() // Output: 1, 2, 3, 4 (order may vary)
 ```
 **See also:** `concat`. Both merge multiple channels, but `mix` emits items as soon as they are available from any input, while `concat` emits all items from one channel before moving to the next.
 **Example (difference from `concat`):**
 ```groovy
 // mix interleaves items as they arrive
-Channel.mix(Channel.of(1, 2), Channel.of(10, 20))
+Channel.of(1, 2)
+    .mix(Channel.of(10, 20))
     .view() // Output: 1, 10, 2, 20 (order may vary)
 // concat preserves channel order
-Channel.concat(Channel.of(1, 2), Channel.of(10, 20))
+Channel.of(1, 2)
+    .concat(Channel.of(10, 20))
     .view() // Output: 1, 2, 10, 20
 ```
 
@@ -300,18 +302,20 @@ Use `concat` to chain channels together in a specific order, such as appending r
     - `channels` (required): Two or more channels to concatenate.
 
 ```groovy
-Channel
-    .concat(Channel.of('a', 'b'), Channel.of('c', 'd'))
+Channel.of('a', 'b')
+    .concat(Channel.of('c', 'd'))
     .view() // Output: 'a', 'b', 'c', 'd'
 ```
 **See also:** `mix`. Use `concat` when you need to preserve the order of channels, unlike `mix` which interleaves items as they arrive.
 **Example (difference from `mix`):**
 ```groovy
 // concat emits all items from the first channel, then the next
-Channel.concat(Channel.of('a', 'b'), Channel.of('x', 'y'))
+Channel.of('a', 'b')
+    .concat(Channel.of('x', 'y'))
     .view() // Output: 'a', 'b', 'x', 'y'
 // mix interleaves items as they become available
-Channel.mix(Channel.of('a', 'b'), Channel.of('x', 'y'))
+Channel.of('a', 'b')
+    .mix(Channel.of('x', 'y'))
     .view() // Output: 'a', 'x', 'b', 'y' (order may vary)
 ```
 

@@ -1,3 +1,13 @@
 site_name: NextFlow Documentation
 nav:
+  - Home: index.md
   - Operators: Operators.md
+theme:
+  name: material
+  palette:
+    scheme: slate
+  features:
+    - navigation.instant
+    - navigation.expand
+extra_css:
+  - extra.css

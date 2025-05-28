@@ -1,11 +1,17 @@
+# Operators
+
+This page will document the available operators in NextFlow.
+
 ## 🔄 Transformation Operators
 
 These operators apply functions to each item in a channel, producing a new channel with transformed data. Use them to modify, aggregate, or restructure data as it flows through your pipeline.
 
 ### map
+Use `map` to transform each item in a channel, such as converting formats, scaling values, or extracting fields.
+
 - **Input:** A channel emitting any type of item.
 - **Output:** A channel emitting the result of applying a function to each input item.
-- **Use case:** Transform each item in a channel, such as converting formats, scaling values, or extracting fields.
+
 ```groovy
 Channel.of(1, 2, 3)
   .map { it * 2 }
@@ -25,9 +31,11 @@ Channel.of([1, 2], [3, 4])
 ```
 
 ### flatMap
+Use `flatMap` to expand nested lists or split items into multiple outputs for further processing.
+
 - **Input:** A channel emitting collections or items that can be expanded.
 - **Output:** A channel emitting each element from the collections, flattened into a single stream.
-- **Use case:** Expand nested lists or split items into multiple outputs for further processing.
+
 ```groovy
 Channel.of([1, 2], [3, 4])
   .flatMap { it }
@@ -47,9 +55,11 @@ Channel.of([1, 2], [3, 4])
 ```
 
 ### collect
+Use `collect` to gather all items into a single collection for summary operations or final output.
+
 - **Input:** A channel emitting any type of item.
 - **Output:** A channel emitting a single list containing all input items.
-- **Use case:** Gather all items into a single collection for summary operations or final output.
+
 ```groovy
 Channel.of(1, 2, 3)
   .collect()
@@ -69,9 +79,11 @@ Channel.of(1, 2, 3)
 ```
 
 ### flatten
+Use `flatten` to remove one level of nesting from channel items, useful after aggregation or grouping.
+
 - **Input:** A channel emitting nested collections.
 - **Output:** A channel emitting all elements from the nested collections as a flat stream.
-- **Use case:** Remove one level of nesting from channel items, useful after aggregation or grouping.
+
 ```groovy
 Channel.of([1, 2], [3, 4])
   .flatten()
@@ -91,9 +103,11 @@ Channel.of([1, 2], [3, 4])
 ```
 
 ### toList
+Use `toList` to collect all items for batch processing or output as a single list.
+
 - **Input:** A channel emitting any type of item.
 - **Output:** A channel emitting a single list of all items, similar to `collect`.
-- **Use case:** Collect all items for batch processing or output as a single list.
+
 ```groovy
 Channel.of('a', 'b', 'c')
   .toList()
@@ -113,9 +127,11 @@ Channel.of(1, 2, 3)
 ```
 
 ### toSortedList
+Use `toSortedList` to collect and sort all items, such as for reporting or ordered output.
+
 - **Input:** A channel emitting comparable items.
 - **Output:** A channel emitting a single sorted list of all items.
-- **Use case:** Collect and sort all items, such as for reporting or ordered output.
+
 ```groovy
 Channel.of(3, 1, 2)
   .toSortedList()
@@ -141,9 +157,11 @@ Channel.of(3, 1, 2)
 These operators filter items in a channel based on specified conditions. Use them to select, limit, or exclude data as it flows through your pipeline.
 
 ### filter
+Use `filter` to select items that meet specific criteria, such as filtering by value, pattern, or type.
+
 - **Input:** A channel emitting any type of item.
 - **Output:** A channel emitting only items that match the given predicate (closure, regex, or type).
-- **Use case:** Select items that meet specific criteria, such as filtering by value, pattern, or type.
+
 ```groovy
 // By closure
 Channel.of(1, 2, 3, 4)
@@ -176,9 +194,11 @@ Channel.of(1, 2, 3, 4)
 ```
 
 ### take
+Use `take` to limit the number of items processed downstream, such as for sampling or testing.
+
 - **Input:** A channel emitting any type of item.
 - **Output:** A channel emitting only the first N items.
-- **Use case:** Limit the number of items processed downstream, such as for sampling or testing.
+
 ```groovy
 Channel.of('a', 'b', 'c', 'd')
   .take(2)
@@ -202,9 +222,11 @@ Channel.of('a', 'b', 'c', 'd')
 ```
 
 ### skip
+Use `skip` to ignore a fixed number of initial items, such as skipping headers or warm-up data.
+
 - **Input:** A channel emitting any type of item.
 - **Output:** A channel emitting all items except the first N.
-- **Use case:** Ignore a fixed number of initial items, such as skipping headers or warm-up data.
+
 ```groovy
 Channel.of(10, 20, 30, 40)
   .skip(2)
@@ -230,9 +252,11 @@ Channel.of(10, 20, 30, 40)
 These operators combine data from multiple channels. Use them to merge, join, or relate data streams for complex workflows.
 
 ### mix
+Use `mix` to merge multiple data sources into a single stream for unified processing.
+
 - **Input:** Two or more channels emitting any type of item.
 - **Output:** A single channel emitting all items from the input channels, in the order they become available.
-- **Use case:** Merge multiple data sources into a single stream for unified processing.
+
 ```groovy
 Channel
   .mix(Channel.of(1, 2), Channel.of(3, 4))
@@ -250,9 +274,11 @@ Channel.concat(Channel.of(1, 2), Channel.of(10, 20))
 ```
 
 ### concat
+Use `concat` to chain channels together in a specific order, such as appending results or logs.
+
 - **Input:** Two or more channels emitting any type of item.
-- **Output:** A single channel emitting all items from the first channel, then all items from the next, and so on.
-- **Use case:** Chain channels together in a specific order, such as appending results or logs.
+- **Output:** A single channel emitting all items from the first channel, then all items from the next, and so
+on.
 ```groovy
 Channel
   .concat(Channel.of('a', 'b'), Channel.of('c', 'd'))
@@ -270,9 +296,11 @@ Channel.mix(Channel.of('a', 'b'), Channel.of('x', 'y'))
 ```
 
 ### combine
+Use `combine` to relate or synchronize data from two sources based on a common identifier.
+
 - **Input:** Two channels emitting tuples or lists, with a key to match items.
 - **Output:** A channel emitting pairs of items from both channels that share the same key.
-- **Use case:** Relate or synchronize data from two sources based on a common identifier.
+
 ```groovy
 Channel.of([1, 'A'], [2, 'B'])
   .combine(Channel.of([1, 10], [2, 20]), by: 0)
@@ -292,9 +320,11 @@ Channel.of([1, 'A'], [1, 'B'])
 ```
 
 ### join
+Use `join` to enrich or correlate data from two sources, such as joining metadata with results.
+
 - **Input:** Two channels emitting tuples or lists, with a key to match items.
 - **Output:** A channel emitting joined tuples for each matching key, similar to a database join.
-- **Use case:** Enrich or correlate data from two sources, such as joining metadata with results.
+
 ```groovy
 Channel.of([1, 'foo'], [2, 'bar'])
   .join(Channel.of([1, 30], [2, 40]), by: 0)
@@ -314,9 +344,11 @@ Channel.of([2, 'foo'], [2, 'bar'])
 ```
 
 ### cross
+Use `cross` to generate all combinations of two datasets, such as parameter sweeps or matrix builds.
+
 - **Input:** Two channels emitting any type of item.
 - **Output:** A channel emitting the Cartesian product (all possible pairs) of items from both channels.
-- **Use case:** Generate all combinations of two datasets, such as parameter sweeps or matrix builds.
+
 ```groovy
 Channel.of([1, 'A'], [2, 'B'])
   .cross(Channel.of([1, 10], [2, 20]))
@@ -342,9 +374,11 @@ Channel.of([1, 'A'], [2, 'B'])
 These operators group or batch items from a channel. Use them to organize data into manageable sets for downstream processing or aggregation.
 
 ### buffer
+Use `buffer` to batch items for grouped processing, such as running jobs in chunks or controlling resource usage.
+
 - **Input:** A channel emitting any type of item.
-- **Output:** A channel emitting lists of items, each list containing up to the specified batch size or meeting a condition.
-- **Use case:** Batch items for grouped processing, such as running jobs in chunks or controlling resource usage.
+- **Output:** A channel emitting lists of items, each list containing up to the specified batch size or meeting
+a condition.
 ```groovy
 Channel.of(1, 2, 3, 4, 5)
   .buffer(size: 2)
@@ -352,9 +386,11 @@ Channel.of(1, 2, 3, 4, 5)
 ```
 
 ### collate
+Use `collate` to create sliding windows or overlapping groups for analysis or rolling computations.
+
 - **Input:** A channel emitting any type of item.
 - **Output:** A channel emitting lists of a fixed size, optionally with overlap between groups.
-- **Use case:** Create sliding windows or overlapping groups for analysis or rolling computations.
+
 ```groovy
 Channel.of(1, 2, 3, 4)
   .collate(3, 1)
@@ -362,9 +398,11 @@ Channel.of(1, 2, 3, 4)
 ```
 
 ### groupTuple
+Use `groupTuple` to group related data by a common identifier, such as grouping results by sample or category.
+
 - **Input:** A channel emitting tuples or lists with a key field.
 - **Output:** A channel emitting pairs of [key, grouped items] where items share the same key.
-- **Use case:** Group related data by a common identifier, such as grouping results by sample or category.
+
 ```groovy
 Channel.of([1, 'A'], [1, 'B'], [2, 'C'])
   .groupTuple(by: 0)
@@ -378,9 +416,11 @@ Channel.of([1, 'A'], [1, 'B'], [2, 'C'])
 These operators handle the collection and writing of data to files. Use them to persist results or intermediate data for later use or external analysis.
 
 ### collectFile
+Use `collectFile` to save all channel items to a file for reporting, archiving, or downstream tools.
+
 - **Input:** A channel emitting any type of item.
 - **Output:** A file containing all items, typically one per line or as specified.
-- **Use case:** Save all channel items to a file for reporting, archiving, or downstream tools.
+
 ```groovy
 Channel.of('foo', 'bar')
   .collectFile(name: 'output.txt')
@@ -388,9 +428,11 @@ Channel.of('foo', 'bar')
 ```
 
 ### save
+Use `save` to persist results or logs to a specific file location for reproducibility or sharing.
+
 - **Input:** A channel emitting any type of item.
 - **Output:** A file at the specified path containing all items.
-- **Use case:** Persist results or logs to a specific file location for reproducibility or sharing.
+
 ```groovy
 Channel.of(1, 2, 3)
   .save('numbers.txt')
@@ -404,9 +446,11 @@ Channel.of(1, 2, 3)
 These operators perform mathematical computations on channel items. Use them to summarize, analyze, or reduce data streams.
 
 ### count
+Use `count` to determine the size of a dataset or the number of results produced by a process.
+
 - **Input:** A channel emitting any type of item.
 - **Output:** A channel emitting a single integer representing the number of items received.
-- **Use case:** Determine the size of a dataset or the number of results produced by a process.
+
 ```groovy
 Channel.of(1, 2, 3)
   .count()
@@ -414,9 +458,11 @@ Channel.of(1, 2, 3)
 ```
 
 ### sum
+Use `sum` to calculate totals, such as the sum of measurements or scores.
+
 - **Input:** A channel emitting numeric items.
 - **Output:** A channel emitting a single value representing the sum of all items.
-- **Use case:** Calculate totals, such as the sum of measurements or scores.
+
 ```groovy
 Channel.of(1, 2, 3)
   .sum()
@@ -424,9 +470,11 @@ Channel.of(1, 2, 3)
 ```
 
 ### min
+Use `min` to find the smallest value in a dataset, such as the lowest score or measurement.
+
 - **Input:** A channel emitting comparable items (e.g., numbers).
 - **Output:** A channel emitting the minimum value among all items.
-- **Use case:** Find the smallest value in a dataset, such as the lowest score or measurement.
+
 ```groovy
 Channel.of(5, 2, 8)
   .min()
@@ -434,9 +482,11 @@ Channel.of(5, 2, 8)
 ```
 
 ### max
+Use `max` to find the largest value in a dataset, such as the highest score or measurement.
+
 - **Input:** A channel emitting comparable items (e.g., numbers).
 - **Output:** A channel emitting the maximum value among all items.
-- **Use case:** Find the largest value in a dataset, such as the highest score or measurement.
+
 ```groovy
 Channel.of(5, 2, 8)
   .max()
@@ -444,9 +494,11 @@ Channel.of(5, 2, 8)
 ```
 
 ### mean
+Use `mean` to calculate the average of a set of values, such as mean coverage or expression.
+
 - **Input:** A channel emitting numeric items.
 - **Output:** A channel emitting the average (mean) value of all items.
-- **Use case:** Calculate the average of a set of values, such as mean coverage or expression.
+
 ```groovy
 Channel.of(2, 4, 6)
   .mean()
@@ -460,14 +512,14 @@ Channel.of(2, 4, 6)
 These operators assist in testing and debugging workflows.
 
 ### view
-Prints items to the console for inspection.
+Use `view` to print items to the console for inspection.
 ```groovy
 Channel.of('foo', 'bar')
   .view() // Output: foo, bar
 ```
 
 ### subscribe
-Subscribes to a channel to perform actions on emitted items.
+Use `subscribe` to perform actions on emitted items.
 ```groovy
 Channel.of(1, 2, 3)
   .subscribe { println "Item: $it" }

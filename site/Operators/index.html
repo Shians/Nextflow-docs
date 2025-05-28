@@ -1,0 +1,1501 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="..">
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
+    
+    
+      
+        <title>Operators - NextFlow Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.342714a4.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#operators" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="NextFlow Documentation" class="md-header__button md-logo" aria-label="NextFlow Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            NextFlow Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Operators
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="NextFlow Documentation" class="md-nav__button md-logo" aria-label="NextFlow Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    NextFlow Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Operators
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Operators
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#transformation-operators" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔄 Transformation Operators
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔄 Transformation Operators">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#map" class="md-nav__link">
+    <span class="md-ellipsis">
+      map
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flatmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      flatMap
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#collect" class="md-nav__link">
+    <span class="md-ellipsis">
+      collect
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flatten" class="md-nav__link">
+    <span class="md-ellipsis">
+      flatten
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tolist" class="md-nav__link">
+    <span class="md-ellipsis">
+      toList
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tosortedlist" class="md-nav__link">
+    <span class="md-ellipsis">
+      toSortedList
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#filtering-operators" class="md-nav__link">
+    <span class="md-ellipsis">
+      🧹 Filtering Operators
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🧹 Filtering Operators">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#filter" class="md-nav__link">
+    <span class="md-ellipsis">
+      filter
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#take" class="md-nav__link">
+    <span class="md-ellipsis">
+      take
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#skip" class="md-nav__link">
+    <span class="md-ellipsis">
+      skip
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#combining-operators" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔗 Combining Operators
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔗 Combining Operators">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mix" class="md-nav__link">
+    <span class="md-ellipsis">
+      mix
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#concat" class="md-nav__link">
+    <span class="md-ellipsis">
+      concat
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#combine" class="md-nav__link">
+    <span class="md-ellipsis">
+      combine
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#join" class="md-nav__link">
+    <span class="md-ellipsis">
+      join
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cross" class="md-nav__link">
+    <span class="md-ellipsis">
+      cross
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#grouping-and-batching-operators" class="md-nav__link">
+    <span class="md-ellipsis">
+      📦 Grouping and Batching Operators
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📦 Grouping and Batching Operators">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#buffer" class="md-nav__link">
+    <span class="md-ellipsis">
+      buffer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#collate" class="md-nav__link">
+    <span class="md-ellipsis">
+      collate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grouptuple" class="md-nav__link">
+    <span class="md-ellipsis">
+      groupTuple
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#file-and-data-persistence-operators" class="md-nav__link">
+    <span class="md-ellipsis">
+      📁 File and Data Persistence Operators
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📁 File and Data Persistence Operators">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#collectfile" class="md-nav__link">
+    <span class="md-ellipsis">
+      collectFile
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#save" class="md-nav__link">
+    <span class="md-ellipsis">
+      save
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mathematical-and-statistical-operators" class="md-nav__link">
+    <span class="md-ellipsis">
+      🧮 Mathematical and Statistical Operators
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🧮 Mathematical and Statistical Operators">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#count" class="md-nav__link">
+    <span class="md-ellipsis">
+      count
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sum" class="md-nav__link">
+    <span class="md-ellipsis">
+      sum
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#min" class="md-nav__link">
+    <span class="md-ellipsis">
+      min
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#max" class="md-nav__link">
+    <span class="md-ellipsis">
+      max
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mean" class="md-nav__link">
+    <span class="md-ellipsis">
+      mean
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-and-debugging-operators" class="md-nav__link">
+    <span class="md-ellipsis">
+      🧪 Testing and Debugging Operators
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🧪 Testing and Debugging Operators">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#view" class="md-nav__link">
+    <span class="md-ellipsis">
+      view
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#subscribe" class="md-nav__link">
+    <span class="md-ellipsis">
+      subscribe
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#transformation-operators" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔄 Transformation Operators
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔄 Transformation Operators">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#map" class="md-nav__link">
+    <span class="md-ellipsis">
+      map
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flatmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      flatMap
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#collect" class="md-nav__link">
+    <span class="md-ellipsis">
+      collect
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flatten" class="md-nav__link">
+    <span class="md-ellipsis">
+      flatten
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tolist" class="md-nav__link">
+    <span class="md-ellipsis">
+      toList
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tosortedlist" class="md-nav__link">
+    <span class="md-ellipsis">
+      toSortedList
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#filtering-operators" class="md-nav__link">
+    <span class="md-ellipsis">
+      🧹 Filtering Operators
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🧹 Filtering Operators">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#filter" class="md-nav__link">
+    <span class="md-ellipsis">
+      filter
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#take" class="md-nav__link">
+    <span class="md-ellipsis">
+      take
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#skip" class="md-nav__link">
+    <span class="md-ellipsis">
+      skip
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#combining-operators" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔗 Combining Operators
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔗 Combining Operators">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mix" class="md-nav__link">
+    <span class="md-ellipsis">
+      mix
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#concat" class="md-nav__link">
+    <span class="md-ellipsis">
+      concat
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#combine" class="md-nav__link">
+    <span class="md-ellipsis">
+      combine
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#join" class="md-nav__link">
+    <span class="md-ellipsis">
+      join
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cross" class="md-nav__link">
+    <span class="md-ellipsis">
+      cross
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#grouping-and-batching-operators" class="md-nav__link">
+    <span class="md-ellipsis">
+      📦 Grouping and Batching Operators
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📦 Grouping and Batching Operators">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#buffer" class="md-nav__link">
+    <span class="md-ellipsis">
+      buffer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#collate" class="md-nav__link">
+    <span class="md-ellipsis">
+      collate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grouptuple" class="md-nav__link">
+    <span class="md-ellipsis">
+      groupTuple
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#file-and-data-persistence-operators" class="md-nav__link">
+    <span class="md-ellipsis">
+      📁 File and Data Persistence Operators
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📁 File and Data Persistence Operators">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#collectfile" class="md-nav__link">
+    <span class="md-ellipsis">
+      collectFile
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#save" class="md-nav__link">
+    <span class="md-ellipsis">
+      save
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mathematical-and-statistical-operators" class="md-nav__link">
+    <span class="md-ellipsis">
+      🧮 Mathematical and Statistical Operators
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🧮 Mathematical and Statistical Operators">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#count" class="md-nav__link">
+    <span class="md-ellipsis">
+      count
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sum" class="md-nav__link">
+    <span class="md-ellipsis">
+      sum
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#min" class="md-nav__link">
+    <span class="md-ellipsis">
+      min
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#max" class="md-nav__link">
+    <span class="md-ellipsis">
+      max
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mean" class="md-nav__link">
+    <span class="md-ellipsis">
+      mean
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-and-debugging-operators" class="md-nav__link">
+    <span class="md-ellipsis">
+      🧪 Testing and Debugging Operators
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🧪 Testing and Debugging Operators">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#view" class="md-nav__link">
+    <span class="md-ellipsis">
+      view
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#subscribe" class="md-nav__link">
+    <span class="md-ellipsis">
+      subscribe
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="operators">Operators</h1>
+<p>This page will document the available operators in NextFlow.</p>
+<h2 id="transformation-operators">🔄 Transformation Operators</h2>
+<p>These operators apply functions to each item in a channel, producing a new channel with transformed data. Use them to modify, aggregate, or restructure data as it flows through your pipeline.</p>
+<h3 id="map">map</h3>
+<p>Use <code>map</code> to transform each item in a channel, such as converting formats, scaling values, or extracting fields.</p>
+<ul>
+<li><strong>Input:</strong> A channel emitting any type of item.</li>
+<li><strong>Output:</strong> A channel emitting the result of applying a function to each input item.</li>
+</ul>
+<pre><code class="language-groovy">Channel.of(1, 2, 3)
+  .map { it * 2 }
+  .view() // Output: 2, 4, 6
+</code></pre>
+<p><strong>See also:</strong> <code>flatMap</code>. While <code>map</code> transforms each item individually, <code>flatMap</code> can emit multiple items for each input by flattening collections.
+<strong>Example (difference from <code>flatMap</code>):</strong></p>
+<pre><code class="language-groovy">// map emits a list as a single item
+Channel.of([1, 2], [3, 4])
+  .map { it }
+  .view() // Output: [1, 2], [3, 4]
+// flatMap emits each element of the list as a separate item
+Channel.of([1, 2], [3, 4])
+  .flatMap { it }
+  .view() // Output: 1, 2, 3, 4
+</code></pre>
+<h3 id="flatmap">flatMap</h3>
+<p>Use <code>flatMap</code> to expand nested lists or split items into multiple outputs for further processing.</p>
+<ul>
+<li><strong>Input:</strong> A channel emitting collections or items that can be expanded.</li>
+<li><strong>Output:</strong> A channel emitting each element from the collections, flattened into a single stream.</li>
+</ul>
+<pre><code class="language-groovy">Channel.of([1, 2], [3, 4])
+  .flatMap { it }
+  .view() // Output: 1, 2, 3, 4
+</code></pre>
+<p><strong>See also:</strong> <code>map</code>. Use <code>flatMap</code> when your transformation returns collections and you want to emit their elements individually, unlike <code>map</code> which emits the collection as a single item.
+<strong>Example (difference from <code>map</code>):</strong></p>
+<pre><code class="language-groovy">// flatMap emits each element of the list as a separate item
+Channel.of([1, 2], [3, 4])
+  .flatMap { it }
+  .view() // Output: 1, 2, 3, 4
+// map emits a list as a single item
+Channel.of([1, 2], [3, 4])
+  .map { it }
+  .view() // Output: [1, 2], [3, 4]
+</code></pre>
+<h3 id="collect">collect</h3>
+<p>Use <code>collect</code> to gather all items into a single collection for summary operations or final output.</p>
+<ul>
+<li><strong>Input:</strong> A channel emitting any type of item.</li>
+<li><strong>Output:</strong> A channel emitting a single list containing all input items.</li>
+</ul>
+<pre><code class="language-groovy">Channel.of(1, 2, 3)
+  .collect()
+  .view() // Output: [1, 2, 3]
+</code></pre>
+<p><strong>See also:</strong> <code>toList</code>. Both aggregate all items into a list, but <code>collect</code> is more general and can be customized for other types of aggregation.
+<strong>Example (difference from <code>toList</code>):</strong></p>
+<pre><code class="language-groovy">// collect can be customized for other aggregations
+Channel.of(1, 2, 3)
+  .collect { acc, val -&gt; acc + val * 2 }
+  .view() // Output: [2, 4, 6]
+// toList always collects all items into a list
+Channel.of(1, 2, 3)
+  .toList()
+  .view() // Output: [1, 2, 3]
+</code></pre>
+<h3 id="flatten">flatten</h3>
+<p>Use <code>flatten</code> to remove one level of nesting from channel items, useful after aggregation or grouping.</p>
+<ul>
+<li><strong>Input:</strong> A channel emitting nested collections.</li>
+<li><strong>Output:</strong> A channel emitting all elements from the nested collections as a flat stream.</li>
+</ul>
+<pre><code class="language-groovy">Channel.of([1, 2], [3, 4])
+  .flatten()
+  .view() // Output: 1, 2, 3, 4
+</code></pre>
+<p><strong>See also:</strong> <code>flatMap</code>. Both flatten nested collections, but <code>flatMap</code> applies a transformation before flattening, while <code>flatten</code> only removes one level of nesting.
+<strong>Example (difference from <code>flatMap</code>):</strong></p>
+<pre><code class="language-groovy">// flatten removes one level of nesting, but does not apply a transformation
+Channel.of([1, 2], [3, 4])
+  .flatten()
+  .view() // Output: 1, 2, 3, 4
+// flatMap applies a transformation and flattens
+Channel.of([1, 2], [3, 4])
+  .flatMap { it }
+  .view() // Output: 1, 2, 3, 4
+</code></pre>
+<h3 id="tolist">toList</h3>
+<p>Use <code>toList</code> to collect all items for batch processing or output as a single list.</p>
+<ul>
+<li><strong>Input:</strong> A channel emitting any type of item.</li>
+<li><strong>Output:</strong> A channel emitting a single list of all items, similar to <code>collect</code>.</li>
+</ul>
+<pre><code class="language-groovy">Channel.of('a', 'b', 'c')
+  .toList()
+  .view() // Output: ['a', 'b', 'c']
+</code></pre>
+<p><strong>See also:</strong> <code>collect</code>. Both gather all items into a list, but <code>toList</code> is a convenience method for this specific case.
+<strong>Example (difference from <code>collect</code>):</strong></p>
+<pre><code class="language-groovy">// toList always collects all items into a list
+Channel.of(1, 2, 3)
+  .toList()
+  .view() // Output: [1, 2, 3]
+// collect can be customized for other aggregations
+Channel.of(1, 2, 3)
+  .collect { acc, val -&gt; acc + val * 2 }
+  .view() // Output: [2, 4, 6]
+</code></pre>
+<h3 id="tosortedlist">toSortedList</h3>
+<p>Use <code>toSortedList</code> to collect and sort all items, such as for reporting or ordered output.</p>
+<ul>
+<li><strong>Input:</strong> A channel emitting comparable items.</li>
+<li><strong>Output:</strong> A channel emitting a single sorted list of all items.</li>
+</ul>
+<pre><code class="language-groovy">Channel.of(3, 1, 2)
+  .toSortedList()
+  .view() // Output: [1, 2, 3]
+</code></pre>
+<p><strong>See also:</strong> <code>toList</code>. <code>toSortedList</code> sorts the items, while <code>toList</code> preserves their original order.
+<strong>Example (difference from <code>toList</code>):</strong></p>
+<pre><code class="language-groovy">// toSortedList sorts the items
+Channel.of(3, 1, 2)
+  .toSortedList()
+  .view() // Output: [1, 2, 3]
+// toList preserves order
+Channel.of(3, 1, 2)
+  .toList()
+  .view() // Output: [3, 1, 2]
+</code></pre>
+<hr />
+<h2 id="filtering-operators">🧹 Filtering Operators</h2>
+<p>These operators filter items in a channel based on specified conditions. Use them to select, limit, or exclude data as it flows through your pipeline.</p>
+<h3 id="filter">filter</h3>
+<p>Use <code>filter</code> to select items that meet specific criteria, such as filtering by value, pattern, or type.</p>
+<ul>
+<li><strong>Input:</strong> A channel emitting any type of item.</li>
+<li><strong>Output:</strong> A channel emitting only items that match the given predicate (closure, regex, or type).</li>
+</ul>
+<pre><code class="language-groovy">// By closure
+Channel.of(1, 2, 3, 4)
+  .filter { it % 2 == 0 }
+  .view() // Output: 2, 4
+// By regex
+Channel.of('apple', 'banana', 'apricot')
+  .filter(/^a.*/)
+  .view() // Output: apple, apricot
+// By type
+Channel.of(1, 'a', 2, 'b')
+  .filter(Number)
+  .view() // Output: 1, 2
+</code></pre>
+<p><strong>See also:</strong> <code>take</code>, <code>skip</code>. While <code>filter</code> selects items based on a condition, <code>take</code> and <code>skip</code> select items based on their position in the stream.
+<strong>Example (difference from <code>take</code> and <code>skip</code>):</strong></p>
+<pre><code class="language-groovy">// filter selects items by condition
+Channel.of(1, 2, 3, 4)
+  .filter { it &gt; 2 }
+  .view() // Output: 3, 4
+// take selects by position
+Channel.of(1, 2, 3, 4)
+  .take(2)
+  .view() // Output: 1, 2
+// skip ignores by position
+Channel.of(1, 2, 3, 4)
+  .skip(2)
+  .view() // Output: 3, 4
+</code></pre>
+<h3 id="take">take</h3>
+<p>Use <code>take</code> to limit the number of items processed downstream, such as for sampling or testing.</p>
+<ul>
+<li><strong>Input:</strong> A channel emitting any type of item.</li>
+<li><strong>Output:</strong> A channel emitting only the first N items.</li>
+</ul>
+<pre><code class="language-groovy">Channel.of('a', 'b', 'c', 'd')
+  .take(2)
+  .view() // Output: 'a', 'b'
+</code></pre>
+<p><strong>See also:</strong> <code>skip</code>, <code>filter</code>. <code>take</code> emits the first N items, while <code>skip</code> ignores the first N. Use <code>filter</code> for condition-based selection.
+<strong>Example (difference from <code>filter</code> and <code>skip</code>):</strong></p>
+<pre><code class="language-groovy">// take emits the first N items
+Channel.of('a', 'b', 'c', 'd')
+  .take(2)
+  .view() // Output: 'a', 'b'
+// filter emits items matching a condition
+Channel.of('a', 'b', 'c', 'd')
+  .filter { it &gt; 'b' }
+  .view() // Output: 'c', 'd'
+// skip ignores the first N items
+Channel.of('a', 'b', 'c', 'd')
+  .skip(2)
+  .view() // Output: 'c', 'd'
+</code></pre>
+<h3 id="skip">skip</h3>
+<p>Use <code>skip</code> to ignore a fixed number of initial items, such as skipping headers or warm-up data.</p>
+<ul>
+<li><strong>Input:</strong> A channel emitting any type of item.</li>
+<li><strong>Output:</strong> A channel emitting all items except the first N.</li>
+</ul>
+<pre><code class="language-groovy">Channel.of(10, 20, 30, 40)
+  .skip(2)
+  .view() // Output: 30, 40
+</code></pre>
+<p><strong>See also:</strong> <code>take</code>. <code>skip</code> ignores the first N items, while <code>take</code> emits only the first N.
+<strong>Example (difference from <code>take</code>):</strong></p>
+<pre><code class="language-groovy">// skip ignores the first N items
+Channel.of(10, 20, 30, 40)
+  .skip(2)
+  .view() // Output: 30, 40
+// take emits only the first N items
+Channel.of(10, 20, 30, 40)
+  .take(2)
+  .view() // Output: 10, 20
+</code></pre>
+<hr />
+<h2 id="combining-operators">🔗 Combining Operators</h2>
+<p>These operators combine data from multiple channels. Use them to merge, join, or relate data streams for complex workflows.</p>
+<h3 id="mix">mix</h3>
+<p>Use <code>mix</code> to merge multiple data sources into a single stream for unified processing.</p>
+<ul>
+<li><strong>Input:</strong> Two or more channels emitting any type of item.</li>
+<li><strong>Output:</strong> A single channel emitting all items from the input channels, in the order they become available.</li>
+</ul>
+<pre><code class="language-groovy">Channel
+  .mix(Channel.of(1, 2), Channel.of(3, 4))
+  .view() // Output: 1, 2, 3, 4 (order may vary)
+</code></pre>
+<p><strong>See also:</strong> <code>concat</code>. Both merge multiple channels, but <code>mix</code> emits items as soon as they are available from any input, while <code>concat</code> emits all items from one channel before moving to the next.
+<strong>Example (difference from <code>concat</code>):</strong></p>
+<pre><code class="language-groovy">// mix interleaves items as they arrive
+Channel.mix(Channel.of(1, 2), Channel.of(10, 20))
+  .view() // Output: 1, 10, 2, 20 (order may vary)
+// concat preserves channel order
+Channel.concat(Channel.of(1, 2), Channel.of(10, 20))
+  .view() // Output: 1, 2, 10, 20
+</code></pre>
+<h3 id="concat">concat</h3>
+<p>Use <code>concat</code> to chain channels together in a specific order, such as appending results or logs.</p>
+<ul>
+<li><strong>Input:</strong> Two or more channels emitting any type of item.</li>
+<li><strong>Output:</strong> A single channel emitting all items from the first channel, then all items from the next, and so
+on.</li>
+</ul>
+<pre><code class="language-groovy">Channel
+  .concat(Channel.of('a', 'b'), Channel.of('c', 'd'))
+  .view() // Output: 'a', 'b', 'c', 'd'
+</code></pre>
+<p><strong>See also:</strong> <code>mix</code>. Use <code>concat</code> when you need to preserve the order of channels, unlike <code>mix</code> which interleaves items as they arrive.
+<strong>Example (difference from <code>mix</code>):</strong></p>
+<pre><code class="language-groovy">// concat emits all items from the first channel, then the next
+Channel.concat(Channel.of('a', 'b'), Channel.of('x', 'y'))
+  .view() // Output: 'a', 'b', 'x', 'y'
+// mix interleaves items as they become available
+Channel.mix(Channel.of('a', 'b'), Channel.of('x', 'y'))
+  .view() // Output: 'a', 'x', 'b', 'y' (order may vary)
+</code></pre>
+<h3 id="combine">combine</h3>
+<p>Use <code>combine</code> to relate or synchronize data from two sources based on a common identifier.</p>
+<ul>
+<li><strong>Input:</strong> Two channels emitting tuples or lists, with a key to match items.</li>
+<li><strong>Output:</strong> A channel emitting pairs of items from both channels that share the same key.</li>
+</ul>
+<pre><code class="language-groovy">Channel.of([1, 'A'], [2, 'B'])
+  .combine(Channel.of([1, 10], [2, 20]), by: 0)
+  .view() // Output: [[1, 'A'], [1, 10]], [[2, 'B'], [2, 20]]
+</code></pre>
+<p><strong>See also:</strong> <code>join</code>. Both relate items from two channels by key, but <code>combine</code> emits all possible pairs for matching keys, while <code>join</code> emits a single joined tuple per key.
+<strong>Example (difference from <code>join</code>):</strong></p>
+<pre><code class="language-groovy">// combine emits all pairs for matching keys
+Channel.of([1, 'A'], [1, 'B'])
+  .combine(Channel.of([1, 10], [1, 20]), by: 0)
+  .view() // Output: [[1, 'A'], [1, 10]], [[1, 'A'], [1, 20]], [[1, 'B'], [1, 10]], [[1, 'B'], [1, 20]]
+// join emits a single joined tuple per key
+Channel.of([1, 'A'], [1, 'B'])
+  .join(Channel.of([1, 10], [1, 20]), by: 0)
+  .view() // Output: [1, 'A', 10], [1, 'B', 20]
+</code></pre>
+<h3 id="join">join</h3>
+<p>Use <code>join</code> to enrich or correlate data from two sources, such as joining metadata with results.</p>
+<ul>
+<li><strong>Input:</strong> Two channels emitting tuples or lists, with a key to match items.</li>
+<li><strong>Output:</strong> A channel emitting joined tuples for each matching key, similar to a database join.</li>
+</ul>
+<pre><code class="language-groovy">Channel.of([1, 'foo'], [2, 'bar'])
+  .join(Channel.of([1, 30], [2, 40]), by: 0)
+  .view() // Output: [1, 'foo', 30], [2, 'bar', 40]
+</code></pre>
+<p><strong>See also:</strong> <code>combine</code>. Use <code>join</code> for a database-style join (one output per key), while <code>combine</code> can emit multiple pairs for each key.
+<strong>Example (difference from <code>combine</code>):</strong></p>
+<pre><code class="language-groovy">// join emits one joined tuple per key
+Channel.of([2, 'foo'], [2, 'bar'])
+  .join(Channel.of([2, 100], [2, 200]), by: 0)
+  .view() // Output: [2, 'foo', 100], [2, 'bar', 200]
+// combine emits all possible pairs for matching keys
+Channel.of([2, 'foo'], [2, 'bar'])
+  .combine(Channel.of([2, 100], [2, 200]), by: 0)
+  .view() // Output: [[2, 'foo'], [2, 100]], [[2, 'foo'], [2, 200]], [[2, 'bar'], [2, 100]], [[2, 'bar'], [2, 200]]
+</code></pre>
+<h3 id="cross">cross</h3>
+<p>Use <code>cross</code> to generate all combinations of two datasets, such as parameter sweeps or matrix builds.</p>
+<ul>
+<li><strong>Input:</strong> Two channels emitting any type of item.</li>
+<li><strong>Output:</strong> A channel emitting the Cartesian product (all possible pairs) of items from both channels.</li>
+</ul>
+<pre><code class="language-groovy">Channel.of([1, 'A'], [2, 'B'])
+  .cross(Channel.of([1, 10], [2, 20]))
+  .view() // Output: [[1, 'A'], [1, 10]], [[2, 'B'], [2, 20]]
+</code></pre>
+<p><strong>See also:</strong> <code>combine</code>. <code>cross</code> produces the full Cartesian product of two channels, while <code>combine</code> only pairs items with matching keys.
+<strong>Example (difference from <code>combine</code>):</strong></p>
+<pre><code class="language-groovy">// cross produces all possible pairs (Cartesian product)
+Channel.of(1, 2)
+  .cross(Channel.of('a', 'b'))
+  .view() // Output: [1, 'a'], [1, 'b'], [2, 'a'], [2, 'b']
+// combine only pairs items with matching keys
+Channel.of([1, 'A'], [2, 'B'])
+  .combine(Channel.of([1, 10], [2, 20]), by: 0)
+  .view() // Output: [[1, 'A'], [1, 10]], [[2, 'B'], [2, 20]]
+</code></pre>
+<hr />
+<h2 id="grouping-and-batching-operators">📦 Grouping and Batching Operators</h2>
+<p>These operators group or batch items from a channel. Use them to organize data into manageable sets for downstream processing or aggregation.</p>
+<h3 id="buffer">buffer</h3>
+<p>Use <code>buffer</code> to batch items for grouped processing, such as running jobs in chunks or controlling resource usage.</p>
+<ul>
+<li><strong>Input:</strong> A channel emitting any type of item.</li>
+<li><strong>Output:</strong> A channel emitting lists of items, each list containing up to the specified batch size or meeting
+a condition.</li>
+</ul>
+<pre><code class="language-groovy">Channel.of(1, 2, 3, 4, 5)
+  .buffer(size: 2)
+  .view() // Output: [1, 2], [3, 4], [5]
+</code></pre>
+<h3 id="collate">collate</h3>
+<p>Use <code>collate</code> to create sliding windows or overlapping groups for analysis or rolling computations.</p>
+<ul>
+<li><strong>Input:</strong> A channel emitting any type of item.</li>
+<li><strong>Output:</strong> A channel emitting lists of a fixed size, optionally with overlap between groups.</li>
+</ul>
+<pre><code class="language-groovy">Channel.of(1, 2, 3, 4)
+  .collate(3, 1)
+  .view() // Output: [1, 2, 3], [2, 3, 4]
+</code></pre>
+<h3 id="grouptuple">groupTuple</h3>
+<p>Use <code>groupTuple</code> to group related data by a common identifier, such as grouping results by sample or category.</p>
+<ul>
+<li><strong>Input:</strong> A channel emitting tuples or lists with a key field.</li>
+<li><strong>Output:</strong> A channel emitting pairs of [key, grouped items] where items share the same key.</li>
+</ul>
+<pre><code class="language-groovy">Channel.of([1, 'A'], [1, 'B'], [2, 'C'])
+  .groupTuple(by: 0)
+  .view() // Output: [1, [[1, 'A'], [1, 'B']]], [2, [[2, 'C']]]
+</code></pre>
+<hr />
+<h2 id="file-and-data-persistence-operators">📁 File and Data Persistence Operators</h2>
+<p>These operators handle the collection and writing of data to files. Use them to persist results or intermediate data for later use or external analysis.</p>
+<h3 id="collectfile">collectFile</h3>
+<p>Use <code>collectFile</code> to save all channel items to a file for reporting, archiving, or downstream tools.</p>
+<ul>
+<li><strong>Input:</strong> A channel emitting any type of item.</li>
+<li><strong>Output:</strong> A file containing all items, typically one per line or as specified.</li>
+</ul>
+<pre><code class="language-groovy">Channel.of('foo', 'bar')
+  .collectFile(name: 'output.txt')
+// Writes 'foo' and 'bar' to output.txt
+</code></pre>
+<h3 id="save">save</h3>
+<p>Use <code>save</code> to persist results or logs to a specific file location for reproducibility or sharing.</p>
+<ul>
+<li><strong>Input:</strong> A channel emitting any type of item.</li>
+<li><strong>Output:</strong> A file at the specified path containing all items.</li>
+</ul>
+<pre><code class="language-groovy">Channel.of(1, 2, 3)
+  .save('numbers.txt')
+// Writes 1, 2, 3 to numbers.txt
+</code></pre>
+<hr />
+<h2 id="mathematical-and-statistical-operators">🧮 Mathematical and Statistical Operators</h2>
+<p>These operators perform mathematical computations on channel items. Use them to summarize, analyze, or reduce data streams.</p>
+<h3 id="count">count</h3>
+<p>Use <code>count</code> to determine the size of a dataset or the number of results produced by a process.</p>
+<ul>
+<li><strong>Input:</strong> A channel emitting any type of item.</li>
+<li><strong>Output:</strong> A channel emitting a single integer representing the number of items received.</li>
+</ul>
+<pre><code class="language-groovy">Channel.of(1, 2, 3)
+  .count()
+  .view() // Output: 3
+</code></pre>
+<h3 id="sum">sum</h3>
+<p>Use <code>sum</code> to calculate totals, such as the sum of measurements or scores.</p>
+<ul>
+<li><strong>Input:</strong> A channel emitting numeric items.</li>
+<li><strong>Output:</strong> A channel emitting a single value representing the sum of all items.</li>
+</ul>
+<pre><code class="language-groovy">Channel.of(1, 2, 3)
+  .sum()
+  .view() // Output: 6
+</code></pre>
+<h3 id="min">min</h3>
+<p>Use <code>min</code> to find the smallest value in a dataset, such as the lowest score or measurement.</p>
+<ul>
+<li><strong>Input:</strong> A channel emitting comparable items (e.g., numbers).</li>
+<li><strong>Output:</strong> A channel emitting the minimum value among all items.</li>
+</ul>
+<pre><code class="language-groovy">Channel.of(5, 2, 8)
+  .min()
+  .view() // Output: 2
+</code></pre>
+<h3 id="max">max</h3>
+<p>Use <code>max</code> to find the largest value in a dataset, such as the highest score or measurement.</p>
+<ul>
+<li><strong>Input:</strong> A channel emitting comparable items (e.g., numbers).</li>
+<li><strong>Output:</strong> A channel emitting the maximum value among all items.</li>
+</ul>
+<pre><code class="language-groovy">Channel.of(5, 2, 8)
+  .max()
+  .view() // Output: 8
+</code></pre>
+<h3 id="mean">mean</h3>
+<p>Use <code>mean</code> to calculate the average of a set of values, such as mean coverage or expression.</p>
+<ul>
+<li><strong>Input:</strong> A channel emitting numeric items.</li>
+<li><strong>Output:</strong> A channel emitting the average (mean) value of all items.</li>
+</ul>
+<pre><code class="language-groovy">Channel.of(2, 4, 6)
+  .mean()
+  .view() // Output: 4.0
+</code></pre>
+<hr />
+<h2 id="testing-and-debugging-operators">🧪 Testing and Debugging Operators</h2>
+<p>These operators assist in testing and debugging workflows.</p>
+<h3 id="view">view</h3>
+<p>Use <code>view</code> to print items to the console for inspection.</p>
+<pre><code class="language-groovy">Channel.of('foo', 'bar')
+  .view() // Output: foo, bar
+</code></pre>
+<h3 id="subscribe">subscribe</h3>
+<p>Use <code>subscribe</code> to perform actions on emitted items.</p>
+<pre><code class="language-groovy">Channel.of(1, 2, 3)
+  .subscribe { println &quot;Item: $it&quot; }
+// Output: Item: 1\nItem: 2\nItem: 3
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant", "navigation.expand"], "search": "../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.13a4f30d.min.js"></script>
+      
+    
+  </body>
+</html>

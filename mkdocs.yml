@@ -1,7 +1,12 @@
 site_name: NextFlow Documentation
 nav:
   - Home: index.md
-  - Operators: Operators.md
+  - Process-Inputs: Inputs.md
+  - Process-Outputs: Outputs.md
+  - Process-Directives: Directives.md
+  - Process-Properties: ProccessProperties.md
+  - Channel-Operators: Operators.md
+
 theme:
   name: material
   palette:
@@ -9,5 +14,14 @@ theme:
   features:
     - navigation.instant
     - navigation.expand
+    - content.code.copy
 extra_css:
   - extra.css
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences

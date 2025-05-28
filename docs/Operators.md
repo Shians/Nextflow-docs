@@ -158,6 +158,51 @@ Channel.of(3, 1, 2)
     .view() // Output: [3, 1, 2]
 ```
 
+### transpose
+Use `transpose` to flatten nested lists in tuples, emitting a new tuple for each element in the nested lists.
+
+- **Input:** A channel emitting tuples or lists, where at least one element is a list.
+- **Output:** A channel emitting tuples with the nested lists expanded into separate items.
+- **Arguments:**
+    - `by` (optional): Index or list of indices to transpose (default: all list elements).
+    - `remainder` (optional): If true, emits incomplete tuples with `null` for missing elements.
+
+```groovy
+Channel.of(
+    [1, ['A', 'B', 'C']],
+    [2, ['C', 'A']],
+    [3, ['B', 'D']]
+)
+.transpose()
+.view()
+// Output:
+// [1, A]
+// [1, B]
+// [1, C]
+// [2, C]
+// [2, A]
+// [3, B]
+// [3, D]
+```
+**See also:** `groupTuple`. While `groupTuple` groups by key, `transpose` expands nested lists into separate tuples.
+**Example (with remainder):**
+```groovy
+Channel.of(
+    [1, [1], ['A']],
+    [2, [1, 2], ['B', 'C']],
+    [3, [1, 2, 3], ['D', 'E']]
+)
+.transpose(remainder: true)
+.view()
+// Output:
+// [1, 1, A]
+// [2, 1, B]
+// [2, 2, C]
+// [3, 1, D]
+// [3, 2, E]
+// [3, 3, null]
+```
+
 ---
 
 ## Filtering Operators

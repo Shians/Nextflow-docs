@@ -483,12 +483,12 @@ Custom label for each process execution.
 
 ```groovy
 process foo {
-    tag "$code"
+    tag "$foo"
     input:
-    val code
+    val foo
     script:
     """
-    echo $code
+    echo $foo
     """
 }
 ```
@@ -533,7 +533,8 @@ process foo {
 ```
 - Here, `task.id` and `task.process` are process properties available for use in the tag.
 
-#### Common process properties for tag:
+**Common process properties for tag:**
+
 - `task.id`: Unique pipeline task index
 - `task.index`: Process-level task index
 - `task.process`: Process name

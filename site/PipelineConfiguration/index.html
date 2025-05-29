@@ -9,6 +9,10 @@
       
       
       
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../Inputs/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -16,7 +20,7 @@
     
     
       
-        <title>Process Configuration in Nextflow - NextFlow Documentation</title>
+        <title>Pipeline-Configuration - NextFlow Documentation</title>
       
     
     
@@ -104,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Process Configuration in Nextflow
+              Pipeline-Configuration
             
           </span>
         </div>
@@ -211,6 +215,148 @@
   
 
       </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Pipeline-Configuration
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Pipeline-Configuration
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#basic-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic Structure
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#process-scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      Process Scope
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#profiles" class="md-nav__link">
+    <span class="md-ellipsis">
+      Profiles
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Profiles">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuring-profiles" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuring Profiles
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#slurm-profile-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Slurm Profile Example
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#including-other-config-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      Including Other Config Files
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#useful-constants" class="md-nav__link">
+    <span class="md-ellipsis">
+      Useful Constants
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conda-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conda Options
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -394,6 +540,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#slurm-profile-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Slurm Profile Example
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#including-other-config-files" class="md-nav__link">
     <span class="md-ellipsis">
       Including Other Config Files
@@ -420,15 +575,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#summary" class="md-nav__link">
-    <span class="md-ellipsis">
-      Summary
-    </span>
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -446,7 +592,7 @@
 
 
 <h1 id="process-configuration-in-nextflow">Process Configuration in Nextflow</h1>
-<p>A Nextflow configuration file (<code>nextflow.config</code>) allows you to control pipeline behavior and resource usage without modifying pipeline code. This is especially useful for adapting pipelines to different environments (local, cluster, cloud) or for tuning performance.</p>
+<p>A Nextflow configuration file (<code>nextflow.config</code>) allows you to control pipeline behavior and resource usage without modifying pipeline code. This is especially useful for adapting pipelines to different environments (local, cluster, cloud) or for tuning performance. For more details, see the official <a href="https://www.nextflow.io/docs/latest/config.html">Nextflow configuration documentation</a>.</p>
 <h2 id="basic-structure">Basic Structure</h2>
 <p>A config file consists of assignments, blocks, and includes. Comments are allowed using <code>//</code> or <code>#</code>.</p>
 <div class="language-groovy highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">// Simple assignment</span>
@@ -526,9 +672,38 @@
 - Use profiles to easily switch between local, cluster, or cloud environments, or to set up testing and production modes.
 - Avoid mixing dot and block syntax for the same scope within a profile to prevent unexpected overrides.</p>
 <p>For more details, see the official <a href="https://www.nextflow.io/docs/latest/config.html#config-profiles">Nextflow configuration documentation</a>.</p>
+<h2 id="slurm-profile-example">Slurm Profile Example</h2>
+<p>The <code>slurm</code> profile is commonly used to configure Nextflow pipelines for execution on SLURM clusters. This profile sets the executor to <code>slurm</code> and allows you to specify SLURM-specific options such as queue/partition, account, and resource requests.</p>
+<p><strong>Example:</strong></p>
+<div class="language-groovy highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">profiles</span><span class="w"> </span><span class="o">{</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">    </span><span class="n">slurm</span><span class="w"> </span><span class="o">{</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">        </span><span class="n">process</span><span class="w"> </span><span class="o">{</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">            </span><span class="n">executor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;slurm&#39;</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">            </span><span class="n">queue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;standard&#39;</span><span class="w">           </span><span class="c1">// SLURM partition name</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">            </span><span class="n">memory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;16 GB&#39;</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">            </span><span class="n">cpus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">            </span><span class="n">time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;24h&#39;</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">            </span><span class="n">clusterOptions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;&#39;</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">        </span><span class="o">}</span>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="w">    </span><span class="o">}</span>
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="o">}</span>
+</span></code></pre></div>
+<ul>
+<li><code>process.executor</code>: Set to <code>slurm</code> to use the SLURM scheduler.</li>
+<li><code>process.queue</code>: Name of the SLURM partition (e.g., <code>batch</code>, <code>short</code>, <code>long</code>).</li>
+<li><code>process.memory</code>: Default memory request for all processes.</li>
+<li><code>process.cpus</code>: Default CPU request for all processes.</li>
+<li><code>process.time</code>: Maximum wall time for each process (e.g., <code>'2h'</code>, <code>'30m'</code>).</li>
+<li><code>process.clusterOptions</code>: Pass additional native SLURM options that would usually be submitted on the <code>sbatch</code> CLI.</li>
+</ul>
+<p><strong>Usage:</strong></p>
+<p>Activate the profile with:
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>nextflow run main.nf -profile slurm
+</span></code></pre></div></p>
+<p>You can further customize the profile with additional SLURM options as needed. For more advanced SLURM configuration, see the <a href="https://www.nextflow.io/docs/latest/executor.html#slurm">official documentation</a>.</p>
 <h2 id="including-other-config-files">Including Other Config Files</h2>
 <p>You can modularize configuration using <code>includeConfig</code>:</p>
-<div class="language-groovy highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">includeConfig</span><span class="w"> </span><span class="s1">&#39;path/to/cluster.config&#39;</span>
+<div class="language-groovy highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">includeConfig</span><span class="w"> </span><span class="s1">&#39;path/to/cluster.config&#39;</span>
 </span></code></pre></div>
 <h2 id="useful-constants">Useful Constants</h2>
 <ul>
@@ -539,15 +714,15 @@
 <h2 id="conda-options">Conda Options</h2>
 <p>Nextflow supports configuring Conda environments for process execution. The <code>conda</code> scope in your config file controls how Conda environments are created and managed.</p>
 <p>Common options include:</p>
-<div class="language-groovy highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">conda</span><span class="w"> </span><span class="o">{</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">    </span><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="w">                </span><span class="c1">// Enable Conda support (default: false)</span>
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">    </span><span class="n">cacheDir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;/path/to/conda&#39;</span><span class="w">   </span><span class="c1">// Directory to store Conda environments</span>
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">    </span><span class="n">channels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span><span class="s1">&#39;bioconda&#39;</span><span class="o">,</span><span class="s1">&#39;conda-forge&#39;</span><span class="o">]</span><span class="w"> </span><span class="c1">// List of Conda channels</span>
-</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">    </span><span class="n">createOptions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;--override-channels&#39;</span><span class="w"> </span><span class="c1">// Extra options for `conda create`</span>
-</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">    </span><span class="n">createTimeout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;30 min&#39;</span><span class="w">      </span><span class="c1">// Timeout for environment creation (default: 20 min)</span>
-</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">    </span><span class="n">useMamba</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="w">               </span><span class="c1">// Use mamba instead of conda (default: false)</span>
-</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">    </span><span class="n">useMicromamba</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="w">         </span><span class="c1">// Use micromamba (default: false)</span>
-</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="o">}</span>
+<div class="language-groovy highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">conda</span><span class="w"> </span><span class="o">{</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">    </span><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="w">                </span><span class="c1">// Enable Conda support (default: false)</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">    </span><span class="n">cacheDir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;/path/to/conda&#39;</span><span class="w">   </span><span class="c1">// Directory to store Conda environments</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">    </span><span class="n">channels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span><span class="s1">&#39;bioconda&#39;</span><span class="o">,</span><span class="s1">&#39;conda-forge&#39;</span><span class="o">]</span><span class="w"> </span><span class="c1">// List of Conda channels</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">    </span><span class="n">createOptions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;--override-channels&#39;</span><span class="w"> </span><span class="c1">// Extra options for `conda create`</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">    </span><span class="n">createTimeout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;30 min&#39;</span><span class="w">      </span><span class="c1">// Timeout for environment creation (default: 20 min)</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">    </span><span class="n">useMamba</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="w">               </span><span class="c1">// Use mamba instead of conda (default: false)</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">    </span><span class="n">useMicromamba</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="w">         </span><span class="c1">// Use micromamba (default: false)</span>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="o">}</span>
 </span></code></pre></div>
 <ul>
 <li><code>enabled</code>: Enables or disables Conda environments.</li>
@@ -559,13 +734,6 @@
 <li><code>useMicromamba</code>: Use <a href="https://micromamba.readthedocs.io/">micromamba</a> for lightweight environments.</li>
 </ul>
 <p>See the <a href="https://www.nextflow.io/docs/latest/conda.html">official documentation</a> for more details and advanced usage.</p>
-<h2 id="summary">Summary</h2>
-<ul>
-<li>Use config files to separate environment-specific settings from pipeline logic.</li>
-<li>Use process selectors for fine-grained control.</li>
-<li>Use profiles for easy switching between environments.</li>
-</ul>
-<p>For more details, see the official <a href="https://www.nextflow.io/docs/latest/config.html">Nextflow configuration documentation</a>.</p>
 
 
 

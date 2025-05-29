@@ -1,6 +1,6 @@
 # Process Configuration in Nextflow
 
-A Nextflow configuration file (`nextflow.config`) allows you to control pipeline behavior and resource usage without modifying pipeline code. This is especially useful for adapting pipelines to different environments (local, cluster, cloud) or for tuning performance.
+A Nextflow configuration file (`nextflow.config`) allows you to control pipeline behavior and resource usage without modifying pipeline code. This is especially useful for adapting pipelines to different environments (local, cluster, cloud) or for tuning performance. For more details, see the official [Nextflow configuration documentation](https://www.nextflow.io/docs/latest/config.html).
 
 ## Basic Structure
 
@@ -102,6 +102,43 @@ profiles {
 
 For more details, see the official [Nextflow configuration documentation](https://www.nextflow.io/docs/latest/config.html#config-profiles).
 
+## Slurm Profile Example
+
+The `slurm` profile is commonly used to configure Nextflow pipelines for execution on SLURM clusters. This profile sets the executor to `slurm` and allows you to specify SLURM-specific options such as queue/partition, account, and resource requests.
+
+**Example:**
+
+```groovy
+profiles {
+    slurm {
+        process {
+            executor = 'slurm'
+            queue = 'standard'           // SLURM partition name
+            memory = '16 GB'
+            cpus = 4
+            time = '24h'
+            clusterOptions = ''
+        }
+    }
+}
+```
+
+- `process.executor`: Set to `slurm` to use the SLURM scheduler.
+- `process.queue`: Name of the SLURM partition (e.g., `batch`, `short`, `long`).
+- `process.memory`: Default memory request for all processes.
+- `process.cpus`: Default CPU request for all processes.
+- `process.time`: Maximum wall time for each process (e.g., `'2h'`, `'30m'`).
+- `process.clusterOptions`: Pass additional native SLURM options that would usually be submitted on the `sbatch` CLI.
+
+**Usage:**
+
+Activate the profile with:
+```
+nextflow run main.nf -profile slurm
+```
+
+You can further customize the profile with additional SLURM options as needed. For more advanced SLURM configuration, see the [official documentation](https://www.nextflow.io/docs/latest/executor.html#slurm).
+
 ## Including Other Config Files
 
 You can modularize configuration using `includeConfig`:
@@ -144,10 +181,3 @@ conda {
 
 See the [official documentation](https://www.nextflow.io/docs/latest/conda.html) for more details and advanced usage.
 
-## Summary
-
-- Use config files to separate environment-specific settings from pipeline logic.
-- Use process selectors for fine-grained control.
-- Use profiles for easy switching between environments.
-
-For more details, see the official [Nextflow configuration documentation](https://www.nextflow.io/docs/latest/config.html).

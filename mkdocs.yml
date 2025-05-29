@@ -1,6 +1,7 @@
 site_name: NextFlow Documentation
 nav:
   - Home: index.md
+  - Pipeline-Configuration: PipelineConfiguration.md
   - Process-Inputs: Inputs.md
   - Process-Outputs: Outputs.md
   - Process-Directives: Directives.md

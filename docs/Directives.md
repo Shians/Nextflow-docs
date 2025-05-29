@@ -453,6 +453,9 @@ Directives for process labeling, tagging, and custom metadata.
 
 Annotate processes for grouping/configuration.
 
+- **Purpose:** Use `label` to assign one or more static labels to a process. These labels are mainly used for configuration and resource selection in your `nextflow.config` file (e.g., to apply settings to all processes with a given label).
+- **Scope:** Labels are static and set at the process definition level.
+
 ```groovy
 process bigTask {
     label 'big_mem'
@@ -460,9 +463,23 @@ process bigTask {
 }
 ```
 
+**Example: Use label for configuration**
+```groovy
+// In nextflow.config
+process {
+    withLabel: big_mem {
+        cpus = 16
+        memory = '64 GB'
+    }
+}
+```
+
 ### tag
 
 Custom label for each process execution.
+
+- **Purpose:** Use `tag` to dynamically assign a string to each process execution (task). This is useful for tracking, logging, and making trace files more informative.
+- **Scope:** Tags can use process properties and are evaluated per task.
 
 ```groovy
 process foo {
@@ -476,38 +493,59 @@ process foo {
 }
 ```
 
-### resourceLabels
+**How tag influences job names (e.g. SLURM):**
 
-Set custom resource labels (cloud, k8s).
+When using cluster executors like SLURM, the `tag` value is often included in the job name submitted to the scheduler. By default, Nextflow sets the job name to include the process name and, if a tag is specified, the tag value. This makes it easier to identify jobs in the cluster queue.
 
-```groovy
-process my_task {
-    resourceLabels region: 'some-region', user: 'some-username'
-    // ...
-}
-```
-
-### ext
-
-Custom user directives.
-
-```groovy
-process mapping {
-    ext version: '2.5.3', args: '--foo --bar'
-    // ...
-}
-```
-
-### fair
-
-Emit outputs in input order.
-
+**Example:**
+If you set:
 ```groovy
 process foo {
-    fair true
-    // ...
+    tag { "SAMPLE_${sample_id}" }
+    input:
+    val sample_id
+    script:
+    """
+    echo "Processing $sample_id"
+    """
 }
 ```
+The SLURM job name will include `foo (SAMPLE_sample1)` for a task with `sample_id = 'sample1'`.
+
+You can further customize the job name using the `executor.jobName` config option:
+```groovy
+executor {
+    jobName = { "${task.process} ${task.tag}" }
+}
+```
+
+**Example: Use tag with process properties**
+```groovy
+process foo {
+    tag { "sample:${task.id} (${task.process})" }
+    input:
+    val sample_id
+    script:
+    """
+    echo "Processing sample $sample_id"
+    """
+}
+```
+- Here, `task.id` and `task.process` are process properties available for use in the tag.
+
+#### Common process properties for tag:
+- `task.id`: Unique pipeline task index
+- `task.index`: Process-level task index
+- `task.process`: Process name
+- `task.attempt`: Current retry attempt
+- `task.cpus`, `task.memory`: Allocated resources
+
+**Summary Table**
+
+| Directive | Purpose | Scope | Example Usage |
+|-----------|---------|-------|--------------|
+| `label`   | Static grouping/configuration | Process definition | Resource selection in config |
+| `tag`     | Dynamic per-task annotation   | Each task         | Logging, trace, reporting   |
 
 ---
 

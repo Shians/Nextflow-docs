@@ -820,7 +820,7 @@
 - Avoid mixing dot and block syntax for the same scope within a profile to prevent unexpected overrides.</p>
 <p>For more details, see the official <a href="https://www.nextflow.io/docs/latest/config.html#config-profiles">Nextflow configuration documentation</a>.</p>
 <h2 id="slurm-profile-example">Slurm Profile Example</h2>
-<p>The <code>slurm</code> profile is commonly used to configure Nextflow pipelines for execution on SLURM clusters. This profile sets the executor to <code>slurm</code> and allows you to specify SLURM-specific options such as queue/partition, account, and resource requests.</p>
+<p>The <code>slurm</code> profile is commonly used to configure Nextflow pipelines for execution on SLURM clusters. This profile sets the executor to <code>slurm</code> and allows you to specify SLURM-specific options such as queue/partition, account, and resource requests. See the <code>Environment &amp; Dependencies &gt; conda</code> section of <a href="../Directives/">Directives</a> for more details on SLURM conda integration.</p>
 <p><strong>Example:</strong></p>
 <div class="language-groovy highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">profiles</span><span class="w"> </span><span class="o">{</span>
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">    </span><span class="n">slurm</span><span class="w"> </span><span class="o">{</span>

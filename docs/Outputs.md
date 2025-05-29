@@ -1,6 +1,6 @@
 # Outputs
 
-This document summarizes the different output types available for Nextflow processes. Use these declarations to specify how data is emitted from your process scripts.
+This page summarizes the different output types available for Nextflow processes. Use these declarations to specify how data is emitted from your process scripts.
 
 ### val
 

@@ -1,6 +1,6 @@
 # Inputs
 
-This document summarizes the different input types available for Nextflow processes. Use these declarations to specify how data is provided to your process scripts.
+This page summarizes the different input types available for Nextflow processes. Use these declarations to specify how data is provided to your process scripts.
 
 ### val
 

@@ -4,7 +4,7 @@ A Nextflow configuration file (`nextflow.config`) allows you to control pipeline
 
 ## Basic Structure
 
-A config file consists of assignments, blocks, and includes. Comments are allowed using `//` or `#`.
+A config file consists of assignments, blocks, and includes. Comments are denoted with `//`.
 
 ```groovy
 // Simple assignment
@@ -137,7 +137,7 @@ Activate the profile with:
 nextflow run main.nf -profile slurm
 ```
 
-You can further customize the profile with additional SLURM options as needed. For more advanced SLURM configuration, see the [official documentation](https://www.nextflow.io/docs/latest/executor.html#slurm).
+You can further customize the profile with additional SLURM options as needed. For more options, see the [Process Directives](Directives.md) documentation.
 
 ## Including Other Config Files
 

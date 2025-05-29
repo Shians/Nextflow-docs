@@ -1,0 +1,624 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
+    
+    
+      
+        <title>Process Configuration in Nextflow - NextFlow Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.342714a4.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#process-configuration-in-nextflow" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="NextFlow Documentation" class="md-header__button md-logo" aria-label="NextFlow Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            NextFlow Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Process Configuration in Nextflow
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="NextFlow Documentation" class="md-nav__button md-logo" aria-label="NextFlow Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    NextFlow Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Inputs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Process-Inputs
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Outputs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Process-Outputs
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Directives/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Process-Directives
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ProccessProperties/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Process-Properties
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Operators/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Channel-Operators
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#basic-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic Structure
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#process-scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      Process Scope
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#profiles" class="md-nav__link">
+    <span class="md-ellipsis">
+      Profiles
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Profiles">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuring-profiles" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuring Profiles
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#including-other-config-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      Including Other Config Files
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#useful-constants" class="md-nav__link">
+    <span class="md-ellipsis">
+      Useful Constants
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conda-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conda Options
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="process-configuration-in-nextflow">Process Configuration in Nextflow</h1>
+<p>A Nextflow configuration file (<code>nextflow.config</code>) allows you to control pipeline behavior and resource usage without modifying pipeline code. This is especially useful for adapting pipelines to different environments (local, cluster, cloud) or for tuning performance.</p>
+<h2 id="basic-structure">Basic Structure</h2>
+<p>A config file consists of assignments, blocks, and includes. Comments are allowed using <code>//</code> or <code>#</code>.</p>
+<div class="language-groovy highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">// Simple assignment</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">workDir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;work&#39;</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">process</span><span class="o">.</span><span class="na">maxErrors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1">// Block syntax for grouping options</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="n">process</span><span class="w"> </span><span class="o">{</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="n">executor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;sge&#39;</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="n">queue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;long&#39;</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="n">memory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;8 GB&#39;</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="o">}</span>
+</span></code></pre></div>
+<h2 id="process-scope">Process Scope</h2>
+<p>The <code>process</code> scope is used to set defaults for all processes in your pipeline. You can also use selectors to target specific processes or labels.</p>
+<div class="language-groovy highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">process</span><span class="w"> </span><span class="o">{</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="n">cpus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="n">memory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;8 GB&#39;</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="nl">withLabel:</span><span class="w"> </span><span class="n">big_mem</span><span class="w"> </span><span class="o">{</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">        </span><span class="n">cpus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">16</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">        </span><span class="n">memory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;64 GB&#39;</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="o">}</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="nl">withName:</span><span class="w"> </span><span class="n">align_reads</span><span class="w"> </span><span class="o">{</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">        </span><span class="n">queue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;short&#39;</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">    </span><span class="o">}</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="o">}</span>
+</span></code></pre></div>
+<ul>
+<li>Settings in the process definition override config defaults.</li>
+<li><code>withLabel</code> applies settings to processes with a given label.</li>
+<li><code>withName</code> applies settings to processes with a specific name.</li>
+</ul>
+<h2 id="profiles">Profiles</h2>
+<p>Profiles allow you to define sets of configuration options for different environments. Select a profile at runtime with <code>-profile</code>.</p>
+<div class="language-groovy highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">profiles</span><span class="w"> </span><span class="o">{</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="n">standard</span><span class="w"> </span><span class="o">{</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">        </span><span class="n">process</span><span class="o">.</span><span class="na">executor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;local&#39;</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="o">}</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="n">cluster</span><span class="w"> </span><span class="o">{</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">        </span><span class="n">process</span><span class="o">.</span><span class="na">executor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;sge&#39;</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">        </span><span class="n">process</span><span class="o">.</span><span class="na">queue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;long&#39;</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="o">}</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="o">}</span>
+</span></code></pre></div>
+<p>Activate with:
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>nextflow run main.nf -profile cluster
+</span></code></pre></div></p>
+<h3 id="configuring-profiles">Configuring Profiles</h3>
+<p>Profiles are defined in the <code>profiles</code> block of your configuration file. Each profile is a named block containing configuration settings that override the defaults when the profile is activated. You can specify multiple profiles, and select one or more at runtime.</p>
+<p><strong>Example:</strong></p>
+<div class="language-groovy highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">profiles</span><span class="w"> </span><span class="o">{</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">    </span><span class="n">local</span><span class="w"> </span><span class="o">{</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">        </span><span class="n">process</span><span class="o">.</span><span class="na">executor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;local&#39;</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">        </span><span class="n">docker</span><span class="o">.</span><span class="na">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">    </span><span class="o">}</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">    </span><span class="n">slurm</span><span class="w"> </span><span class="o">{</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">        </span><span class="n">process</span><span class="o">.</span><span class="na">executor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;slurm&#39;</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">        </span><span class="n">process</span><span class="o">.</span><span class="na">queue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;batch&#39;</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">        </span><span class="n">docker</span><span class="o">.</span><span class="na">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">    </span><span class="o">}</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">    </span><span class="n">test</span><span class="w"> </span><span class="o">{</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">        </span><span class="n">params</span><span class="o">.</span><span class="na">run_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;test&#39;</span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">        </span><span class="n">process</span><span class="o">.</span><span class="na">cpus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">    </span><span class="o">}</span>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="o">}</span>
+</span></code></pre></div>
+<ul>
+<li>To activate a single profile:
+  <div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>nextflow run main.nf -profile slurm
+</span></code></pre></div></li>
+<li>To activate multiple profiles (settings are merged in order):
+  <div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>nextflow run main.nf -profile test,slurm
+</span></code></pre></div></li>
+</ul>
+<p><strong>Notes:</strong>
+- Profile settings override the base configuration.
+- Use profiles to easily switch between local, cluster, or cloud environments, or to set up testing and production modes.
+- Avoid mixing dot and block syntax for the same scope within a profile to prevent unexpected overrides.</p>
+<p>For more details, see the official <a href="https://www.nextflow.io/docs/latest/config.html#config-profiles">Nextflow configuration documentation</a>.</p>
+<h2 id="including-other-config-files">Including Other Config Files</h2>
+<p>You can modularize configuration using <code>includeConfig</code>:</p>
+<div class="language-groovy highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">includeConfig</span><span class="w"> </span><span class="s1">&#39;path/to/cluster.config&#39;</span>
+</span></code></pre></div>
+<h2 id="useful-constants">Useful Constants</h2>
+<ul>
+<li><code>projectDir</code>: Directory where the main script is located.</li>
+<li><code>launchDir</code>: Directory where the workflow was launched.</li>
+<li><code>workDir</code>: Directory for intermediate files.</li>
+</ul>
+<h2 id="conda-options">Conda Options</h2>
+<p>Nextflow supports configuring Conda environments for process execution. The <code>conda</code> scope in your config file controls how Conda environments are created and managed.</p>
+<p>Common options include:</p>
+<div class="language-groovy highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">conda</span><span class="w"> </span><span class="o">{</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">    </span><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="w">                </span><span class="c1">// Enable Conda support (default: false)</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">    </span><span class="n">cacheDir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;/path/to/conda&#39;</span><span class="w">   </span><span class="c1">// Directory to store Conda environments</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">    </span><span class="n">channels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span><span class="s1">&#39;bioconda&#39;</span><span class="o">,</span><span class="s1">&#39;conda-forge&#39;</span><span class="o">]</span><span class="w"> </span><span class="c1">// List of Conda channels</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">    </span><span class="n">createOptions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;--override-channels&#39;</span><span class="w"> </span><span class="c1">// Extra options for `conda create`</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">    </span><span class="n">createTimeout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;30 min&#39;</span><span class="w">      </span><span class="c1">// Timeout for environment creation (default: 20 min)</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">    </span><span class="n">useMamba</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="w">               </span><span class="c1">// Use mamba instead of conda (default: false)</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">    </span><span class="n">useMicromamba</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="w">         </span><span class="c1">// Use micromamba (default: false)</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="o">}</span>
+</span></code></pre></div>
+<ul>
+<li><code>enabled</code>: Enables or disables Conda environments.</li>
+<li><code>cacheDir</code>: Path where Conda environments are stored (should be shared if using a cluster).</li>
+<li><code>channels</code>: List or comma-separated string of Conda channels to use.</li>
+<li><code>createOptions</code>: Additional command-line options for <code>conda create</code>.</li>
+<li><code>createTimeout</code>: Maximum time allowed for environment creation.</li>
+<li><code>useMamba</code>: Use <a href="https://mamba.readthedocs.io/">mamba</a> for faster environment creation.</li>
+<li><code>useMicromamba</code>: Use <a href="https://micromamba.readthedocs.io/">micromamba</a> for lightweight environments.</li>
+</ul>
+<p>See the <a href="https://www.nextflow.io/docs/latest/conda.html">official documentation</a> for more details and advanced usage.</p>
+<h2 id="summary">Summary</h2>
+<ul>
+<li>Use config files to separate environment-specific settings from pipeline logic.</li>
+<li>Use process selectors for fine-grained control.</li>
+<li>Use profiles for easy switching between environments.</li>
+</ul>
+<p>For more details, see the official <a href="https://www.nextflow.io/docs/latest/config.html">Nextflow configuration documentation</a>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant", "navigation.expand", "content.code.copy"], "search": "../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.13a4f30d.min.js"></script>
+      
+    
+  </body>
+</html>

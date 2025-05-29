@@ -255,15 +255,61 @@ Directives for specifying the process environment and dependencies.
 
 Define Conda dependencies.
 
+- **Specify packages:** List one or more packages (with optional versions) separated by spaces.
+- **Specify channels:** Use the `channel::package=version` syntax to select a channel (e.g., `bioconda::bwa=0.7.15`).
+- **Use environment files:** Provide a path to a Conda environment YAML file.
+- **Use existing environments:** Provide a path to an existing Conda environment directory.
+
+**Examples:**
+
 ```groovy
 process foo {
+    // Single package
+    conda 'bwa=0.7.15'
+    script:
+    """
+    bwa mem ...
+    """
+}
+
+process bar {
+    // Multiple packages
     conda 'bwa=0.7.15 fastqc=0.11.5'
     script:
     """
-    your_command
+    bwa mem ... && fastqc ...
+    """
+}
+
+process baz {
+    // Specify channel
+    conda 'bioconda::bwa=0.7.15'
+    script:
+    """
+    bwa mem ...
+    """
+}
+
+process envFileExample {
+    // Use environment YAML file
+    conda './envs/myenv.yaml'
+    script:
+    """
+    my_tool ...
+    """
+}
+
+process existingEnvExample {
+    // Use existing environment directory
+    conda '/path/to/conda/env'
+    script:
+    """
+    my_tool ...
     """
 }
 ```
+
+> See [Conda environments](https://www.nextflow.io/docs/latest/conda.html) for more details.
 
 ### spack
 

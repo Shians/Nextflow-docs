@@ -104,7 +104,7 @@ For more details, see the official [Nextflow configuration documentation](https:
 
 ## Slurm Profile Example
 
-The `slurm` profile is commonly used to configure Nextflow pipelines for execution on SLURM clusters. This profile sets the executor to `slurm` and allows you to specify SLURM-specific options such as queue/partition, account, and resource requests.
+The `slurm` profile is commonly used to configure Nextflow pipelines for execution on SLURM clusters. This profile sets the executor to `slurm` and allows you to specify SLURM-specific options such as queue/partition, account, and resource requests. See the `Environment & Dependencies > conda` section of [Directives](Directives.md) for more details on SLURM conda integration.
 
 **Example:**
 

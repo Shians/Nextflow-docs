@@ -1824,14 +1824,19 @@
 <li><strong>Output:</strong> A channel emitting lists of items, each list containing up to the specified batch size or meeting a condition.</li>
 <li><strong>Arguments:</strong><ul>
 <li><code>size</code> (optional): Maximum number of items per batch.</li>
-<li><code>timeout</code> (optional): Maximum time to wait before emitting a batch.</li>
+<li><code>timeout</code> (optional): Maximum time (in milliseconds or as a duration string, e.g. <code>'5s'</code>) to wait before emitting a batch.</li>
+<li><code>remainder</code> (optional): If <code>true</code>, emit any remaining items as a partial batch at the end (default: <code>false</code>).</li>
+<li><code>skip</code> (optional): Number of items to skip before starting the next batch (for sliding windows).</li>
+<li><code>openingCondition</code> (optional): Start a new batch when this condition is met (can be a value, regex, type, or closure).</li>
+<li><code>closingCondition</code> (optional): Emit the batch when this condition is met (can be a value, regex, type, or closure).</li>
 </ul>
 </li>
 </ul>
-<div class="language-groovy highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="n">Channel</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">2</span><span class="o">,</span><span class="w"> </span><span class="mi">3</span><span class="o">,</span><span class="w"> </span><span class="mi">4</span><span class="o">,</span><span class="w"> </span><span class="mi">5</span><span class="o">)</span>
+<p><div class="language-groovy highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="n">Channel</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">2</span><span class="o">,</span><span class="w"> </span><span class="mi">3</span><span class="o">,</span><span class="w"> </span><span class="mi">4</span><span class="o">,</span><span class="w"> </span><span class="mi">5</span><span class="o">)</span>
 </span><span id="__span-30-2"><a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="w">    </span><span class="o">.</span><span class="na">buffer</span><span class="o">(</span><span class="nl">size:</span><span class="w"> </span><span class="mi">2</span><span class="o">)</span>
 </span><span id="__span-30-3"><a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a><span class="w">    </span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"> </span><span class="c1">// Output: [1, 2], [3, 4], [5]</span>
 </span></code></pre></div>
+<strong>See also:</strong> <code>collate</code>. <code>buffer</code> is more flexible and supports batching by size, time, or custom conditions.</p>
 <h3 id="collate">collate</h3>
 <p>Use <code>collate</code> to create sliding windows or overlapping groups for analysis or rolling computations.</p>
 <ul>
@@ -1840,27 +1845,33 @@
 <li><strong>Arguments:</strong><ul>
 <li><code>size</code> (required): Number of items per group.</li>
 <li><code>step</code> (optional): Number of items to advance between groups (default: same as <code>size</code>).</li>
+<li><code>remainder</code> (optional): If <code>true</code>, emit any remaining items as a partial group at the end (default: <code>true</code>).</li>
 </ul>
 </li>
 </ul>
-<div class="language-groovy highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="n">Channel</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">2</span><span class="o">,</span><span class="w"> </span><span class="mi">3</span><span class="o">,</span><span class="w"> </span><span class="mi">4</span><span class="o">)</span>
+<p><div class="language-groovy highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="n">Channel</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">2</span><span class="o">,</span><span class="w"> </span><span class="mi">3</span><span class="o">,</span><span class="w"> </span><span class="mi">4</span><span class="o">)</span>
 </span><span id="__span-31-2"><a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="w">    </span><span class="o">.</span><span class="na">collate</span><span class="o">(</span><span class="mi">3</span><span class="o">,</span><span class="w"> </span><span class="mi">1</span><span class="o">)</span>
-</span><span id="__span-31-3"><a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a><span class="w">    </span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"> </span><span class="c1">// Output: [1, 2, 3], [2, 3, 4]</span>
+</span><span id="__span-31-3"><a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a><span class="w">    </span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"> </span><span class="c1">// Output: [1, 2, 3], [2, 3, 4], [3, 4], [4]</span>
 </span></code></pre></div>
+<strong>See also:</strong> <code>buffer</code>. <code>collate</code> is a simpler batching operator for fixed-size groups and sliding windows.</p>
 <h3 id="grouptuple">groupTuple</h3>
 <p>Use <code>groupTuple</code> to group related data by a common identifier, such as grouping results by sample or category.</p>
 <ul>
 <li><strong>Input:</strong> A channel emitting tuples or lists with a key field.</li>
 <li><strong>Output:</strong> A channel emitting pairs of [key, grouped items] where items share the same key.</li>
 <li><strong>Arguments:</strong><ul>
-<li><code>by</code> (required): Index or closure to specify the key for grouping.</li>
+<li><code>by</code> (optional): Index or list of indices to use as the grouping key (default: <code>0</code>).</li>
+<li><code>size</code> (optional): Number of items expected per group. If set, groups are emitted as soon as they reach this size.</li>
+<li><code>remainder</code> (optional): If <code>true</code>, incomplete groups (with fewer than <code>size</code> items) are emitted at the end (default: <code>false</code>).</li>
+<li><code>sort</code> (optional): Sorting criteria for grouped items. Can be <code>false</code> (no sort, default), <code>true</code> (natural order), <code>'hash'</code>, <code>'deep'</code>, or a custom closure/comparator.</li>
 </ul>
 </li>
 </ul>
-<div class="language-groovy highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="n">Channel</span><span class="o">.</span><span class="na">of</span><span class="o">([</span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;A&#39;</span><span class="o">],</span><span class="w"> </span><span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;B&#39;</span><span class="o">],</span><span class="w"> </span><span class="o">[</span><span class="mi">2</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;C&#39;</span><span class="o">])</span>
+<p><div class="language-groovy highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="n">Channel</span><span class="o">.</span><span class="na">of</span><span class="o">([</span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;A&#39;</span><span class="o">],</span><span class="w"> </span><span class="o">[</span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;B&#39;</span><span class="o">],</span><span class="w"> </span><span class="o">[</span><span class="mi">2</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;C&#39;</span><span class="o">])</span>
 </span><span id="__span-32-2"><a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a><span class="w">    </span><span class="o">.</span><span class="na">groupTuple</span><span class="o">(</span><span class="nl">by:</span><span class="w"> </span><span class="mi">0</span><span class="o">)</span>
 </span><span id="__span-32-3"><a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a><span class="w">    </span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"> </span><span class="c1">// Output: [1, [[1, &#39;A&#39;], [1, &#39;B&#39;]]], [2, [[2, &#39;C&#39;]]]</span>
 </span></code></pre></div>
+<strong>See also:</strong> <code>transpose</code>. <code>groupTuple</code> groups by key, while <code>transpose</code> expands nested lists in tuples.</p>
 <hr />
 <h2 id="splitting-and-parsing-operators">Splitting and Parsing Operators</h2>
 <p>These operators split or parse structured data from files or strings into records or chunks for downstream processing.</p>

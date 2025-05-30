@@ -457,13 +457,18 @@ Use `buffer` to batch items for grouped processing, such as running jobs in chun
 - **Output:** A channel emitting lists of items, each list containing up to the specified batch size or meeting a condition.
 - **Arguments:**
     - `size` (optional): Maximum number of items per batch.
-    - `timeout` (optional): Maximum time to wait before emitting a batch.
+    - `timeout` (optional): Maximum time (in milliseconds or as a duration string, e.g. `'5s'`) to wait before emitting a batch.
+    - `remainder` (optional): If `true`, emit any remaining items as a partial batch at the end (default: `false`).
+    - `skip` (optional): Number of items to skip before starting the next batch (for sliding windows).
+    - `openingCondition` (optional): Start a new batch when this condition is met (can be a value, regex, type, or closure).
+    - `closingCondition` (optional): Emit the batch when this condition is met (can be a value, regex, type, or closure).
 
 ```groovy
 Channel.of(1, 2, 3, 4, 5)
     .buffer(size: 2)
     .view() // Output: [1, 2], [3, 4], [5]
 ```
+**See also:** `collate`. `buffer` is more flexible and supports batching by size, time, or custom conditions.
 
 ### collate
 Use `collate` to create sliding windows or overlapping groups for analysis or rolling computations.
@@ -473,12 +478,14 @@ Use `collate` to create sliding windows or overlapping groups for analysis or ro
 - **Arguments:**
     - `size` (required): Number of items per group.
     - `step` (optional): Number of items to advance between groups (default: same as `size`).
+    - `remainder` (optional): If `true`, emit any remaining items as a partial group at the end (default: `true`).
 
 ```groovy
 Channel.of(1, 2, 3, 4)
     .collate(3, 1)
-    .view() // Output: [1, 2, 3], [2, 3, 4]
+    .view() // Output: [1, 2, 3], [2, 3, 4], [3, 4], [4]
 ```
+**See also:** `buffer`. `collate` is a simpler batching operator for fixed-size groups and sliding windows.
 
 ### groupTuple
 Use `groupTuple` to group related data by a common identifier, such as grouping results by sample or category.
@@ -486,13 +493,17 @@ Use `groupTuple` to group related data by a common identifier, such as grouping 
 - **Input:** A channel emitting tuples or lists with a key field.
 - **Output:** A channel emitting pairs of [key, grouped items] where items share the same key.
 - **Arguments:**
-    - `by` (required): Index or closure to specify the key for grouping.
+    - `by` (optional): Index or list of indices to use as the grouping key (default: `0`).
+    - `size` (optional): Number of items expected per group. If set, groups are emitted as soon as they reach this size.
+    - `remainder` (optional): If `true`, incomplete groups (with fewer than `size` items) are emitted at the end (default: `false`).
+    - `sort` (optional): Sorting criteria for grouped items. Can be `false` (no sort, default), `true` (natural order), `'hash'`, `'deep'`, or a custom closure/comparator.
 
 ```groovy
 Channel.of([1, 'A'], [1, 'B'], [2, 'C'])
     .groupTuple(by: 0)
     .view() // Output: [1, [[1, 'A'], [1, 'B']]], [2, [[2, 'C']]]
 ```
+**See also:** `transpose`. `groupTuple` groups by key, while `transpose` expands nested lists in tuples.
 
 ---
 

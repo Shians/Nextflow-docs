@@ -449,7 +449,7 @@ Directives for publishing and caching process outputs.
 
 ### publishDir
 
-Publish output files to a directory.
+Publish output files to a directory. The `publishDir` directive allows you to automatically copy, move, or link process output files to a specified directory or remote storage (e.g., S3 bucket). This is useful for collecting results in a single location for downstream analysis or sharing.
 
 ```groovy
 process foo {
@@ -462,6 +462,94 @@ process foo {
     """
 }
 ```
+
+#### Available Options
+
+You can specify options as a map, e.g. `publishDir path: '/some/dir', mode: 'copy', overwrite: true`.
+
+| Option         | Description |
+|----------------|-------------|
+| `path`         | Directory or remote location where files are published. Shortcut: `publishDir '/some/dir'` is equivalent to `publishDir path: '/some/dir'`. |
+| `mode`         | File publishing method:<br> - `'copy'`: Copy files to publish directory.<br> - `'copyNoFollow'`: Copy files without following symlinks.<br> - `'link'`: Create hard links.<br> - `'move'`: Move files (use only for terminal processes).<br> - `'rellink'`: Create relative symlinks.<br> - `'symlink'`: Create absolute symlinks (default). |
+| `overwrite`    | Overwrite existing files in the target directory. Default: `true` during normal execution, `false` when resuming. |
+| `pattern`      | [Glob](https://docs.oracle.com/javase/tutorial/essential/io/fileOps.html#glob) pattern to select which output files to publish. |
+| `saveAs`       | Closure to rename or change the destination path of published files. Return `null` to skip publishing a file. Useful for dynamic naming or selective publishing.<br>Example:<br>```groovy<br>publishDir '/results', saveAs: { filename -> filename.endsWith('.txt') ? "renamed_${filename}" : null }<br>``` |
+| `enabled`      | Enable or disable publishing for this rule. Default: `true`.<br>Example: `enabled: params.publish_results` |
+| `failOnError`  | Abort execution if publishing fails for any file. Default: `true` (since v24.03.0-edge; was `false` before). |
+| `contentType`  | *(Experimental, S3 only)*<br>Specify the media (MIME) type of the published file. If set to `true`, inferred from file extension. Default: `false`. |
+| `storageClass` | *(Experimental, S3 only)*<br>Specify the storage class for the published file (e.g., `STANDARD`, `GLACIER`). |
+| `tags`         | *(Experimental, S3 only)*<br>Associate arbitrary tags with the published file.<br>Example: `tags: [FOO: 'Hello world']` |
+
+#### Examples
+
+**Basic usage:**
+```groovy
+process foo {
+    publishDir '/results'
+    output:
+    path 'output.txt'
+    script:
+    """
+    echo result > output.txt
+    """
+}
+```
+
+**Publish only `.txt` files and rename them:**
+```groovy
+process bar {
+    publishDir '/results', pattern: '*.txt', saveAs: { name -> "renamed_${name}" }
+    output:
+    path '*.txt'
+    path '*.log'
+    script:
+    """
+    echo foo > foo.txt
+    echo bar > bar.log
+    """
+}
+```
+
+**Publish to S3 with custom storage class and tags:**
+```groovy
+process s3_publish {
+    publishDir 's3://my-bucket/results', storageClass: 'STANDARD_IA', tags: [project: 'nf-demo']
+    output:
+    path 'result.txt'
+    script:
+    """
+    echo data > result.txt
+    """
+}
+```
+
+**Disable publishing conditionally:**
+```groovy
+process conditional_publish {
+    publishDir '/results', enabled: params.publish_results
+    output:
+    path 'output.txt'
+    script:
+    """
+    echo something > output.txt
+    """
+}
+```
+
+**Fail pipeline if publishing fails:**
+```groovy
+process strict_publish {
+    publishDir '/results', failOnError: true
+    output:
+    path 'output.txt'
+    script:
+    """
+    echo fail > output.txt
+    """
+}
+```
+
+> For more details, see the [Nextflow documentation on publishDir](https://www.nextflow.io/docs/latest/process.html#publishdir).
 
 ### storeDir
 

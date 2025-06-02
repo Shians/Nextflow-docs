@@ -541,6 +541,18 @@ Channel.fromPath('input.txt')
 ### splitCsv
 Use `splitCsv` to parse CSV-formatted text into rows (as lists or maps).
 
+**Arguments:**
+- `by`: When specified, group rows into chunks with the given size (default: none).
+- `charset`: Parse the content with the specified charset, e.g. UTF-8. See the list of standard charsets for available options.
+- `decompress`: When true, decompress the content using the GZIP format before processing it (default: false). Files with the `.gz` extension are decompressed automatically.
+- `elem`: The index of the element to split when the source items are lists or tuples (default: first file object or first element).
+- `header`: When true, the first line is used as the columns names (default: false). Can also be a list of columns names.
+- `limit`: Limits the number of records to retrieve for each source item (default: no limit).
+- `quote`: The character used to quote values (default: '' or "").
+- `sep`: The character used to separate values (default: `,`).
+- `skip`: Number of lines to ignore from the beginning when parsing the CSV text (default: 0).
+- `strip`: When true, remove leading and trailing blanks from values (default: false).
+
 **Example input file (`input.csv`):**
 ```
 x,y
@@ -563,6 +575,21 @@ Channel.fromPath('input.csv')
     .splitCsv(skip: 1)
     .view() // Output: [1, 2], [3, 4]
 ```
+
+**Example (TSV file):**
+Suppose you have a TSV file (`input.tsv`):
+```
+x	y
+1	2
+3	4
+```
+You can parse it using the `sep` argument:
+```groovy
+Channel.fromPath('input.tsv')
+    .splitCsv(header: true, sep: '\t')
+    .view() // Output: [x:1, y:2], [x:3, y:4]
+```
+
 **See also:** `splitText`.
 
 ### splitFasta

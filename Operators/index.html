@@ -1902,6 +1902,17 @@
 <strong>See also:</strong> <code>splitCsv</code>, <code>splitFasta</code>.</p>
 <h3 id="splitcsv">splitCsv</h3>
 <p>Use <code>splitCsv</code> to parse CSV-formatted text into rows (as lists or maps).</p>
+<p><strong>Arguments:</strong>
+- <code>by</code>: When specified, group rows into chunks with the given size (default: none).
+- <code>charset</code>: Parse the content with the specified charset, e.g. UTF-8. See the list of standard charsets for available options.
+- <code>decompress</code>: When true, decompress the content using the GZIP format before processing it (default: false). Files with the <code>.gz</code> extension are decompressed automatically.
+- <code>elem</code>: The index of the element to split when the source items are lists or tuples (default: first file object or first element).
+- <code>header</code>: When true, the first line is used as the columns names (default: false). Can also be a list of columns names.
+- <code>limit</code>: Limits the number of records to retrieve for each source item (default: no limit).
+- <code>quote</code>: The character used to quote values (default: '' or "").
+- <code>sep</code>: The character used to separate values (default: <code>,</code>).
+- <code>skip</code>: Number of lines to ignore from the beginning when parsing the CSV text (default: 0).
+- <code>strip</code>: When true, remove leading and trailing blanks from values (default: false).</p>
 <p><strong>Example input file (<code>input.csv</code>):</strong>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>x,y
 </span><span id="__span-35-2"><a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a>1,2
@@ -1916,7 +1927,7 @@
 </ul>
 </li>
 </ul>
-<p><div class="language-groovy highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="n">Channel</span><span class="o">.</span><span class="na">fromPath</span><span class="o">(</span><span class="s1">&#39;input.csv&#39;</span><span class="o">)</span>
+<div class="language-groovy highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="n">Channel</span><span class="o">.</span><span class="na">fromPath</span><span class="o">(</span><span class="s1">&#39;input.csv&#39;</span><span class="o">)</span>
 </span><span id="__span-36-2"><a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a><span class="w">    </span><span class="o">.</span><span class="na">splitCsv</span><span class="o">(</span><span class="nl">header:</span><span class="w"> </span><span class="kc">true</span><span class="o">)</span>
 </span><span id="__span-36-3"><a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a><span class="w">    </span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"> </span><span class="c1">// Output: [x:1, y:2], [x:3, y:4]</span>
 </span><span id="__span-36-4"><a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a>
@@ -1924,14 +1935,25 @@
 </span><span id="__span-36-6"><a id="__codelineno-36-6" name="__codelineno-36-6" href="#__codelineno-36-6"></a><span class="w">    </span><span class="o">.</span><span class="na">splitCsv</span><span class="o">(</span><span class="nl">skip:</span><span class="w"> </span><span class="mi">1</span><span class="o">)</span>
 </span><span id="__span-36-7"><a id="__codelineno-36-7" name="__codelineno-36-7" href="#__codelineno-36-7"></a><span class="w">    </span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"> </span><span class="c1">// Output: [1, 2], [3, 4]</span>
 </span></code></pre></div>
-<strong>See also:</strong> <code>splitText</code>.</p>
+<p><strong>Example (TSV file):</strong>
+Suppose you have a TSV file (<code>input.tsv</code>):
+<div class="language-text highlight"><pre><span></span><code><span id="__span-37-1"><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>x   y
+</span><span id="__span-37-2"><a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a>1   2
+</span><span id="__span-37-3"><a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a>3   4
+</span></code></pre></div>
+You can parse it using the <code>sep</code> argument:
+<div class="language-groovy highlight"><pre><span></span><code><span id="__span-38-1"><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="n">Channel</span><span class="o">.</span><span class="na">fromPath</span><span class="o">(</span><span class="s1">&#39;input.tsv&#39;</span><span class="o">)</span>
+</span><span id="__span-38-2"><a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a><span class="w">    </span><span class="o">.</span><span class="na">splitCsv</span><span class="o">(</span><span class="nl">header:</span><span class="w"> </span><span class="kc">true</span><span class="o">,</span><span class="w"> </span><span class="nl">sep:</span><span class="w"> </span><span class="s1">&#39;\t&#39;</span><span class="o">)</span>
+</span><span id="__span-38-3"><a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a><span class="w">    </span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"> </span><span class="c1">// Output: [x:1, y:2], [x:3, y:4]</span>
+</span></code></pre></div></p>
+<p><strong>See also:</strong> <code>splitText</code>.</p>
 <h3 id="splitfasta">splitFasta</h3>
 <p>Use <code>splitFasta</code> to parse FASTA files into sequence records or chunks.</p>
 <p><strong>Example input file (<code>sample.fa</code>):</strong>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-37-1"><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>&gt;seq1
-</span><span id="__span-37-2"><a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a>ATGCATGC
-</span><span id="__span-37-3"><a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a>&gt;seq2
-</span><span id="__span-37-4"><a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a>GGCCTTAA
+<div class="language-text highlight"><pre><span></span><code><span id="__span-39-1"><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>&gt;seq1
+</span><span id="__span-39-2"><a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a>ATGCATGC
+</span><span id="__span-39-3"><a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a>&gt;seq2
+</span><span id="__span-39-4"><a id="__codelineno-39-4" name="__codelineno-39-4" href="#__codelineno-39-4"></a>GGCCTTAA
 </span></code></pre></div></p>
 <ul>
 <li><strong>Input:</strong> A channel emitting FASTA files or strings.</li>
@@ -1941,22 +1963,22 @@
 </ul>
 </li>
 </ul>
-<p><div class="language-groovy highlight"><pre><span></span><code><span id="__span-38-1"><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="n">Channel</span><span class="o">.</span><span class="na">fromPath</span><span class="o">(</span><span class="s1">&#39;sample.fa&#39;</span><span class="o">)</span>
-</span><span id="__span-38-2"><a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a><span class="w">    </span><span class="o">.</span><span class="na">splitFasta</span><span class="o">(</span><span class="nl">record:</span><span class="w"> </span><span class="o">[</span><span class="nl">id:</span><span class="w"> </span><span class="kc">true</span><span class="o">,</span><span class="w"> </span><span class="nl">seqString:</span><span class="w"> </span><span class="kc">true</span><span class="o">])</span>
-</span><span id="__span-38-3"><a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a><span class="w">    </span><span class="o">.</span><span class="na">view</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="n">it</span><span class="o">.</span><span class="na">id</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s1">&#39;: &#39;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">it</span><span class="o">.</span><span class="na">seqString</span><span class="w"> </span><span class="o">}</span>
+<p><div class="language-groovy highlight"><pre><span></span><code><span id="__span-40-1"><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="n">Channel</span><span class="o">.</span><span class="na">fromPath</span><span class="o">(</span><span class="s1">&#39;sample.fa&#39;</span><span class="o">)</span>
+</span><span id="__span-40-2"><a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a><span class="w">    </span><span class="o">.</span><span class="na">splitFasta</span><span class="o">(</span><span class="nl">record:</span><span class="w"> </span><span class="o">[</span><span class="nl">id:</span><span class="w"> </span><span class="kc">true</span><span class="o">,</span><span class="w"> </span><span class="nl">seqString:</span><span class="w"> </span><span class="kc">true</span><span class="o">])</span>
+</span><span id="__span-40-3"><a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a><span class="w">    </span><span class="o">.</span><span class="na">view</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="n">it</span><span class="o">.</span><span class="na">id</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s1">&#39;: &#39;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">it</span><span class="o">.</span><span class="na">seqString</span><span class="w"> </span><span class="o">}</span>
 </span></code></pre></div>
 <strong>See also:</strong> <code>splitFastq</code>.</p>
 <h3 id="splitfastq">splitFastq</h3>
 <p>Use <code>splitFastq</code> to parse FASTQ files into sequence records or chunks.</p>
 <p><strong>Example input file (<code>sample.fastq</code>):</strong>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-39-1"><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>@seq1
-</span><span id="__span-39-2"><a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a>ATGCATGC
-</span><span id="__span-39-3"><a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a>+
-</span><span id="__span-39-4"><a id="__codelineno-39-4" name="__codelineno-39-4" href="#__codelineno-39-4"></a>IIIIIIII
-</span><span id="__span-39-5"><a id="__codelineno-39-5" name="__codelineno-39-5" href="#__codelineno-39-5"></a>@seq2
-</span><span id="__span-39-6"><a id="__codelineno-39-6" name="__codelineno-39-6" href="#__codelineno-39-6"></a>GGCCTTAA
-</span><span id="__span-39-7"><a id="__codelineno-39-7" name="__codelineno-39-7" href="#__codelineno-39-7"></a>+
-</span><span id="__span-39-8"><a id="__codelineno-39-8" name="__codelineno-39-8" href="#__codelineno-39-8"></a>JJJJJJJJ
+<div class="language-text highlight"><pre><span></span><code><span id="__span-41-1"><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a>@seq1
+</span><span id="__span-41-2"><a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a>ATGCATGC
+</span><span id="__span-41-3"><a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a>+
+</span><span id="__span-41-4"><a id="__codelineno-41-4" name="__codelineno-41-4" href="#__codelineno-41-4"></a>IIIIIIII
+</span><span id="__span-41-5"><a id="__codelineno-41-5" name="__codelineno-41-5" href="#__codelineno-41-5"></a>@seq2
+</span><span id="__span-41-6"><a id="__codelineno-41-6" name="__codelineno-41-6" href="#__codelineno-41-6"></a>GGCCTTAA
+</span><span id="__span-41-7"><a id="__codelineno-41-7" name="__codelineno-41-7" href="#__codelineno-41-7"></a>+
+</span><span id="__span-41-8"><a id="__codelineno-41-8" name="__codelineno-41-8" href="#__codelineno-41-8"></a>JJJJJJJJ
 </span></code></pre></div></p>
 <ul>
 <li><strong>Input:</strong> A channel emitting FASTQ files or strings.</li>
@@ -1966,30 +1988,30 @@
 </ul>
 </li>
 </ul>
-<p><div class="language-groovy highlight"><pre><span></span><code><span id="__span-40-1"><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="n">Channel</span><span class="o">.</span><span class="na">fromPath</span><span class="o">(</span><span class="s1">&#39;sample.fastq&#39;</span><span class="o">)</span>
-</span><span id="__span-40-2"><a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a><span class="w">    </span><span class="o">.</span><span class="na">splitFastq</span><span class="o">(</span><span class="nl">record:</span><span class="w"> </span><span class="kc">true</span><span class="o">)</span>
-</span><span id="__span-40-3"><a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a><span class="w">    </span><span class="o">.</span><span class="na">view</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="n">it</span><span class="o">.</span><span class="na">readHeader</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s1">&#39;: &#39;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">it</span><span class="o">.</span><span class="na">readString</span><span class="w"> </span><span class="o">}</span>
+<p><div class="language-groovy highlight"><pre><span></span><code><span id="__span-42-1"><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="n">Channel</span><span class="o">.</span><span class="na">fromPath</span><span class="o">(</span><span class="s1">&#39;sample.fastq&#39;</span><span class="o">)</span>
+</span><span id="__span-42-2"><a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a><span class="w">    </span><span class="o">.</span><span class="na">splitFastq</span><span class="o">(</span><span class="nl">record:</span><span class="w"> </span><span class="kc">true</span><span class="o">)</span>
+</span><span id="__span-42-3"><a id="__codelineno-42-3" name="__codelineno-42-3" href="#__codelineno-42-3"></a><span class="w">    </span><span class="o">.</span><span class="na">view</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="n">it</span><span class="o">.</span><span class="na">readHeader</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s1">&#39;: &#39;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">it</span><span class="o">.</span><span class="na">readString</span><span class="w"> </span><span class="o">}</span>
 </span></code></pre></div>
 <strong>See also:</strong> <code>splitFasta</code>.</p>
 <h3 id="splitjson">splitJson</h3>
 <p>Use <code>splitJson</code> to parse JSON arrays or objects into individual records.</p>
 <p><strong>Example input file (<code>input.json</code>):</strong>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-41-1"><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a>[1, 2, 3]
+<div class="language-text highlight"><pre><span></span><code><span id="__span-43-1"><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a>[1, 2, 3]
 </span></code></pre></div>
 or
-<div class="language-text highlight"><pre><span></span><code><span id="__span-42-1"><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a>{&quot;a&quot;: 1, &quot;b&quot;: 2}
+<div class="language-text highlight"><pre><span></span><code><span id="__span-44-1"><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a>{&quot;a&quot;: 1, &quot;b&quot;: 2}
 </span></code></pre></div></p>
 <ul>
 <li><strong>Input:</strong> A channel emitting JSON strings or files.</li>
 <li><strong>Output:</strong> A channel emitting elements of arrays or key-value pairs of objects.</li>
 <li><strong>Arguments:</strong> None.</li>
 </ul>
-<p><div class="language-groovy highlight"><pre><span></span><code><span id="__span-43-1"><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a><span class="n">Channel</span><span class="o">.</span><span class="na">fromPath</span><span class="o">(</span><span class="s1">&#39;input.json&#39;</span><span class="o">)</span>
-</span><span id="__span-43-2"><a id="__codelineno-43-2" name="__codelineno-43-2" href="#__codelineno-43-2"></a><span class="w">    </span><span class="o">.</span><span class="na">splitJson</span><span class="o">()</span>
-</span><span id="__span-43-3"><a id="__codelineno-43-3" name="__codelineno-43-3" href="#__codelineno-43-3"></a><span class="w">    </span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"> </span><span class="c1">// Output: 1, 2, 3</span>
-</span><span id="__span-43-4"><a id="__codelineno-43-4" name="__codelineno-43-4" href="#__codelineno-43-4"></a><span class="n">Channel</span><span class="o">.</span><span class="na">fromPath</span><span class="o">(</span><span class="s1">&#39;input.json&#39;</span><span class="o">)</span>
-</span><span id="__span-43-5"><a id="__codelineno-43-5" name="__codelineno-43-5" href="#__codelineno-43-5"></a><span class="w">    </span><span class="o">.</span><span class="na">splitJson</span><span class="o">()</span>
-</span><span id="__span-43-6"><a id="__codelineno-43-6" name="__codelineno-43-6" href="#__codelineno-43-6"></a><span class="w">    </span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"> </span><span class="c1">// Output: [key:a, value:1], [key:b, value:2]</span>
+<p><div class="language-groovy highlight"><pre><span></span><code><span id="__span-45-1"><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a><span class="n">Channel</span><span class="o">.</span><span class="na">fromPath</span><span class="o">(</span><span class="s1">&#39;input.json&#39;</span><span class="o">)</span>
+</span><span id="__span-45-2"><a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a><span class="w">    </span><span class="o">.</span><span class="na">splitJson</span><span class="o">()</span>
+</span><span id="__span-45-3"><a id="__codelineno-45-3" name="__codelineno-45-3" href="#__codelineno-45-3"></a><span class="w">    </span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"> </span><span class="c1">// Output: 1, 2, 3</span>
+</span><span id="__span-45-4"><a id="__codelineno-45-4" name="__codelineno-45-4" href="#__codelineno-45-4"></a><span class="n">Channel</span><span class="o">.</span><span class="na">fromPath</span><span class="o">(</span><span class="s1">&#39;input.json&#39;</span><span class="o">)</span>
+</span><span id="__span-45-5"><a id="__codelineno-45-5" name="__codelineno-45-5" href="#__codelineno-45-5"></a><span class="w">    </span><span class="o">.</span><span class="na">splitJson</span><span class="o">()</span>
+</span><span id="__span-45-6"><a id="__codelineno-45-6" name="__codelineno-45-6" href="#__codelineno-45-6"></a><span class="w">    </span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"> </span><span class="c1">// Output: [key:a, value:1], [key:b, value:2]</span>
 </span></code></pre></div>
 <strong>See also:</strong> <code>splitCsv</code>.</p>
 <hr />
@@ -2006,9 +2028,9 @@ or
 </ul>
 </li>
 </ul>
-<div class="language-groovy highlight"><pre><span></span><code><span id="__span-44-1"><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a><span class="n">Channel</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="s1">&#39;foo&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;bar&#39;</span><span class="o">)</span>
-</span><span id="__span-44-2"><a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a><span class="w">    </span><span class="o">.</span><span class="na">collectFile</span><span class="o">(</span><span class="nl">name:</span><span class="w"> </span><span class="s1">&#39;output.txt&#39;</span><span class="o">)</span>
-</span><span id="__span-44-3"><a id="__codelineno-44-3" name="__codelineno-44-3" href="#__codelineno-44-3"></a><span class="c1">// Writes &#39;foo&#39; and &#39;bar&#39; to output.txt</span>
+<div class="language-groovy highlight"><pre><span></span><code><span id="__span-46-1"><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a><span class="n">Channel</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="s1">&#39;foo&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;bar&#39;</span><span class="o">)</span>
+</span><span id="__span-46-2"><a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a><span class="w">    </span><span class="o">.</span><span class="na">collectFile</span><span class="o">(</span><span class="nl">name:</span><span class="w"> </span><span class="s1">&#39;output.txt&#39;</span><span class="o">)</span>
+</span><span id="__span-46-3"><a id="__codelineno-46-3" name="__codelineno-46-3" href="#__codelineno-46-3"></a><span class="c1">// Writes &#39;foo&#39; and &#39;bar&#39; to output.txt</span>
 </span></code></pre></div>
 <h3 id="save">save</h3>
 <p>Use <code>save</code> to persist results or logs to a specific file location for reproducibility or sharing.</p>
@@ -2020,9 +2042,9 @@ or
 </ul>
 </li>
 </ul>
-<div class="language-groovy highlight"><pre><span></span><code><span id="__span-45-1"><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a><span class="n">Channel</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">2</span><span class="o">,</span><span class="w"> </span><span class="mi">3</span><span class="o">)</span>
-</span><span id="__span-45-2"><a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a><span class="w">    </span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="s1">&#39;numbers.txt&#39;</span><span class="o">)</span>
-</span><span id="__span-45-3"><a id="__codelineno-45-3" name="__codelineno-45-3" href="#__codelineno-45-3"></a><span class="c1">// Writes 1, 2, 3 to numbers.txt</span>
+<div class="language-groovy highlight"><pre><span></span><code><span id="__span-47-1"><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a><span class="n">Channel</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">2</span><span class="o">,</span><span class="w"> </span><span class="mi">3</span><span class="o">)</span>
+</span><span id="__span-47-2"><a id="__codelineno-47-2" name="__codelineno-47-2" href="#__codelineno-47-2"></a><span class="w">    </span><span class="o">.</span><span class="na">save</span><span class="o">(</span><span class="s1">&#39;numbers.txt&#39;</span><span class="o">)</span>
+</span><span id="__span-47-3"><a id="__codelineno-47-3" name="__codelineno-47-3" href="#__codelineno-47-3"></a><span class="c1">// Writes 1, 2, 3 to numbers.txt</span>
 </span></code></pre></div>
 <hr />
 <h2 id="mathematical-and-statistical-operators">Mathematical and Statistical Operators</h2>
@@ -2034,9 +2056,9 @@ or
 <li><strong>Output:</strong> A channel emitting a single integer representing the number of items received.</li>
 <li><strong>Arguments:</strong> None.</li>
 </ul>
-<div class="language-groovy highlight"><pre><span></span><code><span id="__span-46-1"><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a><span class="n">Channel</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">2</span><span class="o">,</span><span class="w"> </span><span class="mi">3</span><span class="o">)</span>
-</span><span id="__span-46-2"><a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a><span class="w">    </span><span class="o">.</span><span class="na">count</span><span class="o">()</span>
-</span><span id="__span-46-3"><a id="__codelineno-46-3" name="__codelineno-46-3" href="#__codelineno-46-3"></a><span class="w">    </span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"> </span><span class="c1">// Output: 3</span>
+<div class="language-groovy highlight"><pre><span></span><code><span id="__span-48-1"><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a><span class="n">Channel</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">2</span><span class="o">,</span><span class="w"> </span><span class="mi">3</span><span class="o">)</span>
+</span><span id="__span-48-2"><a id="__codelineno-48-2" name="__codelineno-48-2" href="#__codelineno-48-2"></a><span class="w">    </span><span class="o">.</span><span class="na">count</span><span class="o">()</span>
+</span><span id="__span-48-3"><a id="__codelineno-48-3" name="__codelineno-48-3" href="#__codelineno-48-3"></a><span class="w">    </span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"> </span><span class="c1">// Output: 3</span>
 </span></code></pre></div>
 <h3 id="sum">sum</h3>
 <p>Use <code>sum</code> to calculate totals, such as the sum of measurements or scores.</p>
@@ -2045,9 +2067,9 @@ or
 <li><strong>Output:</strong> A channel emitting a single value representing the sum of all items.</li>
 <li><strong>Arguments:</strong> None.</li>
 </ul>
-<div class="language-groovy highlight"><pre><span></span><code><span id="__span-47-1"><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a><span class="n">Channel</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">2</span><span class="o">,</span><span class="w"> </span><span class="mi">3</span><span class="o">)</span>
-</span><span id="__span-47-2"><a id="__codelineno-47-2" name="__codelineno-47-2" href="#__codelineno-47-2"></a><span class="w">    </span><span class="o">.</span><span class="na">sum</span><span class="o">()</span>
-</span><span id="__span-47-3"><a id="__codelineno-47-3" name="__codelineno-47-3" href="#__codelineno-47-3"></a><span class="w">    </span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"> </span><span class="c1">// Output: 6</span>
+<div class="language-groovy highlight"><pre><span></span><code><span id="__span-49-1"><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a><span class="n">Channel</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">2</span><span class="o">,</span><span class="w"> </span><span class="mi">3</span><span class="o">)</span>
+</span><span id="__span-49-2"><a id="__codelineno-49-2" name="__codelineno-49-2" href="#__codelineno-49-2"></a><span class="w">    </span><span class="o">.</span><span class="na">sum</span><span class="o">()</span>
+</span><span id="__span-49-3"><a id="__codelineno-49-3" name="__codelineno-49-3" href="#__codelineno-49-3"></a><span class="w">    </span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"> </span><span class="c1">// Output: 6</span>
 </span></code></pre></div>
 <h3 id="min">min</h3>
 <p>Use <code>min</code> to find the smallest value in a dataset, such as the lowest score or measurement.</p>
@@ -2056,9 +2078,9 @@ or
 <li><strong>Output:</strong> A channel emitting the minimum value among all items.</li>
 <li><strong>Arguments:</strong> None.</li>
 </ul>
-<div class="language-groovy highlight"><pre><span></span><code><span id="__span-48-1"><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a><span class="n">Channel</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="mi">5</span><span class="o">,</span><span class="w"> </span><span class="mi">2</span><span class="o">,</span><span class="w"> </span><span class="mi">8</span><span class="o">)</span>
-</span><span id="__span-48-2"><a id="__codelineno-48-2" name="__codelineno-48-2" href="#__codelineno-48-2"></a><span class="w">    </span><span class="o">.</span><span class="na">min</span><span class="o">()</span>
-</span><span id="__span-48-3"><a id="__codelineno-48-3" name="__codelineno-48-3" href="#__codelineno-48-3"></a><span class="w">    </span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"> </span><span class="c1">// Output: 2</span>
+<div class="language-groovy highlight"><pre><span></span><code><span id="__span-50-1"><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a><span class="n">Channel</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="mi">5</span><span class="o">,</span><span class="w"> </span><span class="mi">2</span><span class="o">,</span><span class="w"> </span><span class="mi">8</span><span class="o">)</span>
+</span><span id="__span-50-2"><a id="__codelineno-50-2" name="__codelineno-50-2" href="#__codelineno-50-2"></a><span class="w">    </span><span class="o">.</span><span class="na">min</span><span class="o">()</span>
+</span><span id="__span-50-3"><a id="__codelineno-50-3" name="__codelineno-50-3" href="#__codelineno-50-3"></a><span class="w">    </span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"> </span><span class="c1">// Output: 2</span>
 </span></code></pre></div>
 <h3 id="max">max</h3>
 <p>Use <code>max</code> to find the largest value in a dataset, such as the highest score or measurement.</p>
@@ -2067,9 +2089,9 @@ or
 <li><strong>Output:</strong> A channel emitting the maximum value among all items.</li>
 <li><strong>Arguments:</strong> None.</li>
 </ul>
-<div class="language-groovy highlight"><pre><span></span><code><span id="__span-49-1"><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a><span class="n">Channel</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="mi">5</span><span class="o">,</span><span class="w"> </span><span class="mi">2</span><span class="o">,</span><span class="w"> </span><span class="mi">8</span><span class="o">)</span>
-</span><span id="__span-49-2"><a id="__codelineno-49-2" name="__codelineno-49-2" href="#__codelineno-49-2"></a><span class="w">    </span><span class="o">.</span><span class="na">max</span><span class="o">()</span>
-</span><span id="__span-49-3"><a id="__codelineno-49-3" name="__codelineno-49-3" href="#__codelineno-49-3"></a><span class="w">    </span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"> </span><span class="c1">// Output: 8</span>
+<div class="language-groovy highlight"><pre><span></span><code><span id="__span-51-1"><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a><span class="n">Channel</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="mi">5</span><span class="o">,</span><span class="w"> </span><span class="mi">2</span><span class="o">,</span><span class="w"> </span><span class="mi">8</span><span class="o">)</span>
+</span><span id="__span-51-2"><a id="__codelineno-51-2" name="__codelineno-51-2" href="#__codelineno-51-2"></a><span class="w">    </span><span class="o">.</span><span class="na">max</span><span class="o">()</span>
+</span><span id="__span-51-3"><a id="__codelineno-51-3" name="__codelineno-51-3" href="#__codelineno-51-3"></a><span class="w">    </span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"> </span><span class="c1">// Output: 8</span>
 </span></code></pre></div>
 <h3 id="mean">mean</h3>
 <p>Use <code>mean</code> to calculate the average of a set of values, such as mean coverage or expression.</p>
@@ -2078,9 +2100,9 @@ or
 <li><strong>Output:</strong> A channel emitting the average (mean) value of all items.</li>
 <li><strong>Arguments:</strong> None.</li>
 </ul>
-<div class="language-groovy highlight"><pre><span></span><code><span id="__span-50-1"><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a><span class="n">Channel</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span><span class="w"> </span><span class="mi">4</span><span class="o">,</span><span class="w"> </span><span class="mi">6</span><span class="o">)</span>
-</span><span id="__span-50-2"><a id="__codelineno-50-2" name="__codelineno-50-2" href="#__codelineno-50-2"></a><span class="w">    </span><span class="o">.</span><span class="na">mean</span><span class="o">()</span>
-</span><span id="__span-50-3"><a id="__codelineno-50-3" name="__codelineno-50-3" href="#__codelineno-50-3"></a><span class="w">    </span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"> </span><span class="c1">// Output: 4.0</span>
+<div class="language-groovy highlight"><pre><span></span><code><span id="__span-52-1"><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a><span class="n">Channel</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span><span class="w"> </span><span class="mi">4</span><span class="o">,</span><span class="w"> </span><span class="mi">6</span><span class="o">)</span>
+</span><span id="__span-52-2"><a id="__codelineno-52-2" name="__codelineno-52-2" href="#__codelineno-52-2"></a><span class="w">    </span><span class="o">.</span><span class="na">mean</span><span class="o">()</span>
+</span><span id="__span-52-3"><a id="__codelineno-52-3" name="__codelineno-52-3" href="#__codelineno-52-3"></a><span class="w">    </span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"> </span><span class="c1">// Output: 4.0</span>
 </span></code></pre></div>
 <hr />
 <h2 id="testing-and-debugging-operators">Testing and Debugging Operators</h2>
@@ -2089,16 +2111,16 @@ or
 <p>Use <code>view</code> to print items to the console for inspection.
 - <strong>Arguments:</strong>
     - <code>closure</code> (optional): Custom formatting or logic for each item.</p>
-<div class="language-groovy highlight"><pre><span></span><code><span id="__span-51-1"><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a><span class="n">Channel</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="s1">&#39;foo&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;bar&#39;</span><span class="o">)</span>
-</span><span id="__span-51-2"><a id="__codelineno-51-2" name="__codelineno-51-2" href="#__codelineno-51-2"></a><span class="w">    </span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"> </span><span class="c1">// Output: foo, bar</span>
+<div class="language-groovy highlight"><pre><span></span><code><span id="__span-53-1"><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a><span class="n">Channel</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="s1">&#39;foo&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;bar&#39;</span><span class="o">)</span>
+</span><span id="__span-53-2"><a id="__codelineno-53-2" name="__codelineno-53-2" href="#__codelineno-53-2"></a><span class="w">    </span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"> </span><span class="c1">// Output: foo, bar</span>
 </span></code></pre></div>
 <h3 id="subscribe">subscribe</h3>
 <p>Use <code>subscribe</code> to perform actions on emitted items.
 - <strong>Arguments:</strong>
     - <code>closure</code> (required): Action to perform for each item.</p>
-<div class="language-groovy highlight"><pre><span></span><code><span id="__span-52-1"><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a><span class="n">Channel</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">2</span><span class="o">,</span><span class="w"> </span><span class="mi">3</span><span class="o">)</span>
-</span><span id="__span-52-2"><a id="__codelineno-52-2" name="__codelineno-52-2" href="#__codelineno-52-2"></a><span class="w">    </span><span class="o">.</span><span class="na">subscribe</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="n">println</span><span class="w"> </span><span class="s2">&quot;Item: $it&quot;</span><span class="w"> </span><span class="o">}</span>
-</span><span id="__span-52-3"><a id="__codelineno-52-3" name="__codelineno-52-3" href="#__codelineno-52-3"></a><span class="c1">// Output: Item: 1\nItem: 2\nItem: 3</span>
+<div class="language-groovy highlight"><pre><span></span><code><span id="__span-54-1"><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a><span class="n">Channel</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">2</span><span class="o">,</span><span class="w"> </span><span class="mi">3</span><span class="o">)</span>
+</span><span id="__span-54-2"><a id="__codelineno-54-2" name="__codelineno-54-2" href="#__codelineno-54-2"></a><span class="w">    </span><span class="o">.</span><span class="na">subscribe</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="n">println</span><span class="w"> </span><span class="s2">&quot;Item: $it&quot;</span><span class="w"> </span><span class="o">}</span>
+</span><span id="__span-54-3"><a id="__codelineno-54-3" name="__codelineno-54-3" href="#__codelineno-54-3"></a><span class="c1">// Output: Item: 1\nItem: 2\nItem: 3</span>
 </span></code></pre></div>
 
 

@@ -1934,7 +1934,7 @@
 </tr>
 <tr>
 <td><code>saveAs</code></td>
-<td>Closure to rename or change the destination path of published files. Return <code>null</code> to skip publishing a file. Useful for dynamic naming or selective publishing.<br>Example:<br><code>groovy&lt;br&gt;publishDir '/results', saveAs: { filename -&gt; filename.endsWith('.txt') ? "renamed_${filename}" : null }&lt;br&gt;</code></td>
+<td>Closure to rename or change the destination path of published files. Return <code>null</code> to skip publishing a file. Useful for dynamic naming or selective publishing.<br>Example:<br><code>&lt;br&gt;publishDir '/results', saveAs: { filename -&gt; filename.endsWith('.txt') ? "renamed_${filename}" : null }&lt;br&gt;</code></td>
 </tr>
 <tr>
 <td><code>enabled</code></td>

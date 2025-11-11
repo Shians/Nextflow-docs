@@ -365,30 +365,44 @@ Channel.of('a', 'b')
 ```
 
 ### combine
-Use `combine` to relate or synchronize data from two sources based on a common identifier.
+Use `combine` to produce all combinations (Cartesian product) of two channels, optionally filtering by a matching key.
 
-- **Input:** Two channels emitting tuples or lists, with a key to match items.
-- **Output:** A channel emitting pairs of items from both channels that share the same key.
+- **Input:** Two channels emitting any type of item, or tuples/lists when using the `by` option.
+- **Output:** A channel emitting all combinations of items from both channels. When `by` is used, only combinations with matching keys are emitted, merged and flattened into single tuples.
 - **Arguments:**
     - `other` (required): The other channel to combine with.
-    - `by` (required): Index or closure to specify the key for matching.
+    - `by` (optional): Index or list of indices to use as the matching key. When specified, only items with matching keys are combined, and the result is flattened.
 
 ```groovy
-Channel.of([1, 'A'], [2, 'B'])
-    .combine(Channel.of([1, 10], [2, 20]), by: 0)
-    .view() // Output: [[1, 'A'], [1, 10]], [[2, 'B'], [2, 20]]
+// Without by: produces full Cartesian product
+Channel.of(1, 2, 3)
+    .combine(Channel.of('hello', 'ciao'))
+    .view()
+// Output: [1, hello], [2, hello], [3, hello], [1, ciao], [2, ciao], [3, ciao]
+
+// With by: combines items with matching keys, flattened
+Channel.of([1, 'alpha'], [2, 'beta'])
+    .combine(Channel.of([1, 'x'], [1, 'y'], [2, 'p']), by: 0)
+    .view()
+// Output: [1, alpha, x], [1, alpha, y], [2, beta, p]
 ```
-**See also:** `join`. Both relate items from two channels by key, but `combine` emits all possible pairs for matching keys, while `join` emits a single joined tuple per key.
-**Example (difference from `join`):**
+**See also:** `cross`, `join`. `combine` produces the full Cartesian product (or filtered by key with `by`), `cross` produces combinations only for matching keys (keeping pairs nested), and `join` merges one item per key.
+**Example (difference from `cross` and `join`):**
 ```groovy
-// combine emits all pairs for matching keys
+// combine with by: merges and flattens all matching pairs
 Channel.of([1, 'A'], [1, 'B'])
     .combine(Channel.of([1, 10], [1, 20]), by: 0)
-    .view() // Output: [[1, 'A'], [1, 10]], [[1, 'A'], [1, 20]], [[1, 'B'], [1, 10]], [[1, 'B'], [1, 20]]
-// join emits a single joined tuple per key
+    .view() // Output: [1, A, 10], [1, A, 20], [1, B, 10], [1, B, 20]
+
+// cross: keeps pairs nested, matches by key
+Channel.of([1, 'A'], [1, 'B'])
+    .cross(Channel.of([1, 10], [1, 20]))
+    .view() // Output: [[1, A], [1, 10]], [[1, A], [1, 20]], [[1, B], [1, 10]], [[1, B], [1, 20]]
+
+// join: emits one merged tuple per matching item
 Channel.of([1, 'A'], [1, 'B'])
     .join(Channel.of([1, 10], [1, 20]), by: 0)
-    .view() // Output: [1, 'A', 10], [1, 'B', 20]
+    .view() // Output: [1, A, 10], [1, B, 20]
 ```
 
 ### join
@@ -419,29 +433,44 @@ Channel.of([2, 'foo'], [2, 'bar'])
 ```
 
 ### cross
-Use `cross` to generate all combinations of two datasets, such as parameter sweeps or matrix builds.
+Use `cross` to emit pairwise combinations of two channels where items share a matching key.
 
-- **Input:** Two channels emitting any type of item.
-- **Output:** A channel emitting the Cartesian product (all possible pairs) of items from both channels.
+- **Input:** Two channels emitting tuples, lists, or single values.
+- **Output:** A channel emitting pairs (as nested lists) for items that have matching keys. By default, the key is the first element in a tuple/list, or the value itself for other types.
 - **Arguments:**
     - `other` (required): The other channel to cross with.
+    - `closure` (optional): A closure to extract the matching key from each item.
 
 ```groovy
-Channel.of([1, 'A'], [2, 'B'])
-    .cross(Channel.of([1, 10], [2, 20]))
-    .view() // Output: [[1, 'A'], [1, 10]], [[2, 'B'], [2, 20]]
+// Default: matches by first element of tuples
+Channel.of([1, 'alpha'], [2, 'beta'])
+    .cross(Channel.of([1, 'x'], [1, 'y'], [2, 'p']))
+    .view()
+// Output: [[1, alpha], [1, x]], [[1, alpha], [1, y]], [[2, beta], [2, p]]
+
+// Custom key extraction
+Channel.of([1, 'alpha'], [2, 'beta'])
+    .cross(Channel.of([1, 'a'], [2, 'b'])) { v -> v[1][0] }
+    .view()
+// Output: [[1, alpha], [1, a]], [[2, beta], [2, b]]
 ```
-**See also:** `combine`. `cross` produces the full Cartesian product of two channels, while `combine` only pairs items with matching keys.
+**See also:** `combine`. `cross` filters by matching keys and keeps pairs nested, while `combine` produces the full Cartesian product (unless `by` is specified, in which case it filters and flattens).
 **Example (difference from `combine`):**
 ```groovy
-// cross produces all possible pairs (Cartesian product)
-Channel.of(1, 2)
-    .cross(Channel.of('a', 'b'))
-    .view() // Output: [1, 'a'], [1, 'b'], [2, 'a'], [2, 'b']
-// combine only pairs items with matching keys
+// cross: only matching keys, pairs stay nested
 Channel.of([1, 'A'], [2, 'B'])
-    .combine(Channel.of([1, 10], [2, 20]), by: 0)
-    .view() // Output: [[1, 'A'], [1, 10]], [[2, 'B'], [2, 20]]
+    .cross(Channel.of([1, 10], [1, 20], [2, 30]))
+    .view() // Output: [[1, A], [1, 10]], [[1, A], [1, 20]], [[2, B], [2, 30]]
+
+// combine with by: only matching keys, pairs are flattened
+Channel.of([1, 'A'], [2, 'B'])
+    .combine(Channel.of([1, 10], [1, 20], [2, 30]), by: 0)
+    .view() // Output: [1, A, 10], [1, A, 20], [2, B, 30]
+
+// combine without by: full Cartesian product
+Channel.of([1, 'A'], [2, 'B'])
+    .combine(Channel.of([1, 10], [2, 20]))
+    .view() // Output: [[1, A], [1, 10]], [[1, A], [2, 20]], [[2, B], [1, 10]], [[2, B], [2, 20]]
 ```
 
 ---

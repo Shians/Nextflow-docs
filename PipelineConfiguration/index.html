@@ -805,7 +805,7 @@
 </span></code></pre></div>
 <ul>
 <li>Settings in the process definition override config defaults.</li>
-<li><code>withLabel</code> applies settings to processes with a given label.</li>
+<li><code>withLabel</code> applies settings to processes with a given label. See <a href="../Directives/#label">Directives.md <code>label</code></a> for assigning labels to a process.</li>
 <li><code>withName</code> applies settings to processes with a specific name.</li>
 </ul>
 <h2 id="pipeline-parameters-params">Pipeline Parameters (params)</h2>
@@ -925,7 +925,7 @@
 <li><code>enabled</code>, <code>runOptions</code>, and other engine-specific options can be set with either dot syntax or a block, same as any other config scope.</li>
 </ul>
 <h2 id="conda-options">Conda Options</h2>
-<p>Nextflow supports configuring Conda environments for process execution. The <code>conda</code> scope in your config file controls how Conda environments are created and managed.</p>
+<p>Nextflow supports configuring Conda environments for process execution. The <code>conda</code> scope in your config file controls how Conda environments are created and managed; use it alongside the per-process <a href="../Directives/#conda"><code>conda</code> directive</a>, which specifies which packages to install.</p>
 <p>Common options include:</p>
 <div class="language-groovy highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">conda</span><span class="w"> </span><span class="o">{</span>
 </span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">    </span><span class="n">enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="w">                </span><span class="c1">// Enable Conda support (default: false)</span>

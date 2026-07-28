@@ -1877,7 +1877,7 @@
 </span></code></pre></div>
 <hr />
 <h2 id="combining-operators">Combining Operators</h2>
-<p>These operators combine data from multiple channels. Use them to merge, join, or relate data streams for complex workflows.</p>
+<p>These operators combine data from multiple channels. Use them to merge, join, or relate data streams for complex workflows. <code>join</code>, <code>combine</code>, and <code>cross</code> typically operate on key-based <a href="../Inputs/#tuple">tuples</a>, the same shape used by <a href="../Inputs/#tuple"><code>tuple</code> inputs</a> and <a href="../Outputs/#tuple"><code>tuple</code> outputs</a>.</p>
 <h3 id="mix">mix</h3>
 <p>Use <code>mix</code> to merge multiple data sources into a single stream for unified processing.</p>
 <ul>
@@ -2094,10 +2094,10 @@
 </span><span id="__span-37-2"><a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a><span class="w">    </span><span class="o">.</span><span class="na">groupTuple</span><span class="o">(</span><span class="nl">by:</span><span class="w"> </span><span class="mi">0</span><span class="o">)</span>
 </span><span id="__span-37-3"><a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a><span class="w">    </span><span class="o">.</span><span class="na">view</span><span class="o">()</span><span class="w"> </span><span class="c1">// Output: [1, [&#39;A&#39;, &#39;B&#39;]], [2, [&#39;C&#39;]]</span>
 </span></code></pre></div>
-<strong>See also:</strong> <code>transpose</code>. <code>groupTuple</code> groups by key, while <code>transpose</code> expands nested lists in tuples.</p>
+<strong>See also:</strong> <code>transpose</code>. <code>groupTuple</code> groups by key, while <code>transpose</code> expands nested lists in tuples. Works on the <a href="../Inputs/#tuple">tuple</a> shape shared with <code>tuple</code> inputs/outputs.</p>
 <hr />
 <h2 id="splitting-and-parsing-operators">Splitting and Parsing Operators</h2>
-<p>These operators split or parse structured data from files or strings into records or chunks for downstream processing.</p>
+<p>These operators split or parse structured data from files or strings into records or chunks for downstream processing. Their source channels are typically built from a <a href="../Inputs/#path"><code>path</code> input</a> (e.g. <code>Channel.fromPath(...)</code>).</p>
 <h3 id="splittext">splitText</h3>
 <p>Use <code>splitText</code> to split multi-line text into lines or chunks of lines.</p>
 <p><strong>Example input file (<code>input.txt</code>):</strong>
@@ -2264,6 +2264,7 @@ or
 </span><span id="__span-51-8"><a id="__codelineno-51-8" name="__codelineno-51-8" href="#__codelineno-51-8"></a><span class="w">    </span><span class="o">.</span><span class="na">view</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="s2">&quot;Wrote ${file.name}&quot;</span><span class="w"> </span><span class="o">}</span>
 </span><span id="__span-51-9"><a id="__codelineno-51-9" name="__codelineno-51-9" href="#__codelineno-51-9"></a><span class="c1">// Writes &#39;apple\navocado\n&#39; to a.txt, &#39;banana\n&#39; to b.txt</span>
 </span></code></pre></div>
+<p><strong>See also:</strong> <a href="../Directives/#publishdir">Directives.md <code>publishDir</code></a>/<a href="../Directives/#storedir"><code>storeDir</code></a>. <code>collectFile</code> writes arbitrary channel items to a file from within the workflow; <code>publishDir</code>/<code>storeDir</code> instead copy a process's declared <a href="../Outputs/#path"><code>path</code> outputs</a> after the task runs.</p>
 <hr />
 <h2 id="mathematical-and-statistical-operators">Mathematical and Statistical Operators</h2>
 <p>These operators perform mathematical computations on channel items. Use them to summarize, analyze, or reduce data streams.</p>

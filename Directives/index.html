@@ -1920,7 +1920,7 @@
 </span><span id="__span-14-32"><a id="__codelineno-14-32" name="__codelineno-14-32" href="#__codelineno-14-32"></a><span class="s2">    &quot;&quot;&quot;</span>
 </span><span id="__span-14-33"><a id="__codelineno-14-33" name="__codelineno-14-33" href="#__codelineno-14-33"></a><span class="o">}</span>
 </span></code></pre></div>
-<p><strong>See also:</strong> Configure default executor in <code>nextflow.config</code> rather than per-process for consistency.</p>
+<p><strong>See also:</strong> Configure default executor in <code>nextflow.config</code> rather than per-process for consistency. See <a href="../PipelineConfiguration/#slurm-profile-example">PipelineConfiguration.md "Slurm Profile Example"</a> for a full cluster-executor config.</p>
 <h3 id="queue">queue</h3>
 <p>Use <code>queue</code> to specify which job queue or partition to submit the process to when using grid executors (SGE, SLURM, PBS, LSF). Queues often have different resource limits and priorities.</p>
 <div class="language-groovy highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">process</span><span class="w"> </span><span class="n">quick_task</span><span class="w"> </span><span class="o">{</span>
@@ -2212,7 +2212,7 @@
 </span><span id="__span-32-11"><a id="__codelineno-32-11" name="__codelineno-32-11" href="#__codelineno-32-11"></a><span class="s2">    &quot;&quot;&quot;</span>
 </span><span id="__span-32-12"><a id="__codelineno-32-12" name="__codelineno-32-12" href="#__codelineno-32-12"></a><span class="o">}</span>
 </span></code></pre></div></p>
-<p><strong>See also:</strong> <code>maxRetries</code> for retry limits, <code>maxErrors</code> for total error thresholds.</p>
+<p><strong>See also:</strong> <code>maxRetries</code> for retry limits, <code>maxErrors</code> for total error thresholds. When retrying, <a href="../ProccessProperties/#taskattempt"><code>task.attempt</code></a> and <a href="../ProccessProperties/#taskpreviousexception"><code>task.previousException</code></a> are available to adapt behavior on subsequent attempts.</p>
 <h3 id="maxretries">maxRetries</h3>
 <p>Use <code>maxRetries</code> to set the maximum number of times a task will be retried after failure. Must be used with <code>errorStrategy 'retry'</code>. Common pattern: increase resources on each retry attempt.</p>
 <div class="language-groovy highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="n">process</span><span class="w"> </span><span class="n">retry_with_backoff</span><span class="w"> </span><span class="o">{</span>
@@ -2265,7 +2265,7 @@
 - <code>140</code>: Exceeded time limit
 - <code>143</code>: Terminated by signal (SIGTERM)
 - Custom application exit codes</p>
-<p><strong>See also:</strong> <code>errorStrategy</code> for enabling retries, <code>maxErrors</code> for process-wide error limits.</p>
+<p><strong>See also:</strong> <code>errorStrategy</code> for enabling retries, <code>maxErrors</code> for process-wide error limits. See <a href="../ProccessProperties/#taskattempt"><code>task.attempt</code></a> and <a href="../ProccessProperties/#taskprevioustrace"><code>task.previousTrace</code></a> for tuning resources per retry, as shown above.</p>
 <h3 id="maxerrors">maxErrors</h3>
 <p>Use <code>maxErrors</code> to set the maximum number of failed task instances allowed for a process before terminating the pipeline. This is useful when processing many samples and you want to tolerate some failures without stopping everything.</p>
 <div class="language-groovy highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="n">process</span><span class="w"> </span><span class="n">sample_analysis</span><span class="w"> </span><span class="o">{</span>
@@ -2383,6 +2383,7 @@
 <blockquote>
 <p>See <a href="https://www.nextflow.io/docs/latest/conda.html">Conda environments</a> for more details.</p>
 </blockquote>
+<p><strong>See also:</strong> <a href="../PipelineConfiguration/#conda-options">PipelineConfiguration.md "Conda Options"</a> for pipeline-wide settings (cache dir, mamba, channels) that control how this directive's environments are built.</p>
 <h3 id="spack">spack</h3>
 <p>Use <code>spack</code> to define software dependencies managed by Spack, a package manager for supercomputers and scientific software. Similar to <code>conda</code> but optimized for HPC environments.</p>
 <div class="language-groovy highlight"><pre><span></span><code><span id="__span-40-1"><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="n">process</span><span class="w"> </span><span class="n">alignment</span><span class="w"> </span><span class="o">{</span>
@@ -2507,7 +2508,7 @@
 <blockquote>
 <p><strong>Note:</strong> Enable containers in your config with <code>docker.enabled = true</code> or <code>singularity.enabled = true</code>.</p>
 </blockquote>
-<p><strong>See also:</strong> <code>containerOptions</code> for additional container settings, <code>conda</code> for auto-container feature.</p>
+<p><strong>See also:</strong> <code>containerOptions</code> for additional container settings, <code>conda</code> for auto-container feature. See <a href="../PipelineConfiguration/#container-engines-docker-singularity">PipelineConfiguration.md "Container Engines"</a> for enabling Docker/Singularity globally.</p>
 <h3 id="containeroptions">containerOptions</h3>
 <p>Use <code>containerOptions</code> to pass additional options to the container engine (Docker, Singularity, Podman). This allows mounting volumes, setting environment variables, or specifying runtime parameters.</p>
 <div class="language-groovy highlight"><pre><span></span><code><span id="__span-49-1"><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a><span class="n">process</span><span class="w"> </span><span class="n">mount_volume</span><span class="w"> </span><span class="o">{</span>
@@ -2790,7 +2791,7 @@
 </span><span id="__span-69-11"><a id="__codelineno-69-11" name="__codelineno-69-11" href="#__codelineno-69-11"></a><span class="s2">    &quot;&quot;&quot;</span>
 </span><span id="__span-69-12"><a id="__codelineno-69-12" name="__codelineno-69-12" href="#__codelineno-69-12"></a><span class="o">}</span>
 </span></code></pre></div></p>
-<p><strong>See also:</strong> <code>stageOutMode</code> for output file handling, <code>scratch</code> for temporary execution directories.</p>
+<p><strong>See also:</strong> <code>stageOutMode</code> for output file handling, <code>scratch</code> for temporary execution directories. Applies to files declared via <a href="../Inputs/#path">Inputs.md <code>path</code></a>.</p>
 <h3 id="stageoutmode">stageOutMode</h3>
 <p>Use <code>stageOutMode</code> to control how output files are transferred from the process working directory to their final destination. Choose based on performance needs and storage constraints.</p>
 <p><strong>Available modes:</strong>
@@ -2871,7 +2872,7 @@
 </span><span id="__span-74-12"><a id="__codelineno-74-12" name="__codelineno-74-12" href="#__codelineno-74-12"></a><span class="s2">    &quot;&quot;&quot;</span>
 </span><span id="__span-74-13"><a id="__codelineno-74-13" name="__codelineno-74-13" href="#__codelineno-74-13"></a><span class="o">}</span>
 </span></code></pre></div></p>
-<p><strong>See also:</strong> <code>publishDir</code> for specifying output destinations, <code>stageInMode</code> for input handling.</p>
+<p><strong>See also:</strong> <code>publishDir</code> for specifying output destinations, <code>stageInMode</code> for input handling. Applies to files declared via <a href="../Outputs/#path">Outputs.md <code>path</code></a>.</p>
 <h3 id="scratch">scratch</h3>
 <p>Use <code>scratch</code> to execute the process in a temporary local directory (often on fast local storage) and then copy results back. This improves I/O performance when working directory is on slow network storage.</p>
 <div class="language-groovy highlight"><pre><span></span><code><span id="__span-75-1"><a id="__codelineno-75-1" name="__codelineno-75-1" href="#__codelineno-75-1"></a><span class="n">process</span><span class="w"> </span><span class="n">fast_io</span><span class="w"> </span><span class="o">{</span>
@@ -3076,6 +3077,7 @@
 <blockquote>
 <p>For more details, see the <a href="https://www.nextflow.io/docs/latest/process.html#publishdir">Nextflow documentation on publishDir</a>.</p>
 </blockquote>
+<p><strong>See also:</strong> <a href="../Outputs/#path">Outputs.md <code>path</code></a> declares which files exist; <code>publishDir</code> decides where they get copied. <code>storeDir</code> below is the alternative for permanent, cached results rather than one-off publishing.</p>
 <h3 id="storedir">storeDir</h3>
 <p>Use <code>storeDir</code> to permanently store process outputs in a specified directory and reuse them across pipeline runs. Unlike <code>publishDir</code>, <code>storeDir</code> is used for caching expensive computations and enables true result persistence.</p>
 <p><strong>Key differences from <code>publishDir</code>:</strong>
@@ -3327,6 +3329,7 @@
 </span><span id="__span-98-6"><a id="__codelineno-98-6" name="__codelineno-98-6" href="#__codelineno-98-6"></a><span class="w">    </span><span class="o">}</span>
 </span><span id="__span-98-7"><a id="__codelineno-98-7" name="__codelineno-98-7" href="#__codelineno-98-7"></a><span class="o">}</span>
 </span></code></pre></div></p>
+<p><strong>See also:</strong> <a href="../PipelineConfiguration/#process-scope">PipelineConfiguration.md "Process Scope"</a> for the full <code>withLabel</code>/<code>withName</code> selector syntax used to target labeled processes.</p>
 <h3 id="tag">tag</h3>
 <p>Custom label for each process execution.</p>
 <ul>

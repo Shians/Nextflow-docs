@@ -709,6 +709,7 @@
 </span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="o">}</span>
 </span></code></pre></div></li>
 </ul>
+<p><strong>See also:</strong> <a href="../Inputs/#val">Inputs.md <code>val</code></a>, the input-side counterpart for receiving a value into the process body.</p>
 <h3 id="path">path</h3>
 <p>Declare a file output. Receives output files from the task environment matching the given pattern.</p>
 <ul>
@@ -735,6 +736,7 @@
 </span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="o">}</span>
 </span></code></pre></div></li>
 </ul>
+<p><strong>See also:</strong> <a href="../Inputs/#path">Inputs.md <code>path</code></a>, the input-side counterpart — shares the same <code>arity</code> option. <a href="../Directives/#publishdir">Directives.md <code>publishDir</code></a>/<a href="../Directives/#storedir"><code>storeDir</code></a> decide where these files get copied once emitted. <a href="../Operators/#collectfile">Operators.md <code>collectFile</code></a> is another way to write channel contents to disk, from the channel side rather than the process side.</p>
 <h3 id="env">env</h3>
 <p>Declare an environment variable output. Receives the value of the environment variable from the task environment.</p>
 <ul>
@@ -751,6 +753,7 @@
 </span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="o">}</span>
 </span></code></pre></div></li>
 </ul>
+<p><strong>See also:</strong> <a href="../Inputs/#env">Inputs.md <code>env</code></a>, the input-side counterpart for exporting a variable into the task environment.</p>
 <h3 id="stdout">stdout</h3>
 <p>Declare a stdout output. Receives the standard output of the task script.</p>
 <ul>
@@ -767,6 +770,7 @@
 </span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="o">}</span>
 </span></code></pre></div></li>
 </ul>
+<p><strong>See also:</strong> <a href="../Inputs/#stdin">Inputs.md <code>stdin</code></a>, the input-side counterpart for piping a string into the task as standard input. <code>eval</code> below is similar but captures a separate command's output rather than the script's own stdout.</p>
 <h3 id="eval">eval</h3>
 <p>Declare an eval output. Receives the standard output of the given command, executed in the task environment after the task script. If the command fails, the task also fails.</p>
 <ul>
@@ -799,6 +803,7 @@
 </span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="o">}</span>
 </span></code></pre></div></li>
 </ul>
+<p><strong>See also:</strong> <a href="../Inputs/#tuple">Inputs.md <code>tuple</code></a>, the input-side counterpart. <a href="../Operators/#combining-operators">Operators.md <code>groupTuple</code>/<code>join</code>/<code>combine</code>/<code>cross</code></a> are the main operators for working with tuple-shaped channels produced here.</p>
 
 
 

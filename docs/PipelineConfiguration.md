@@ -41,6 +41,23 @@ process {
 - `withLabel` applies settings to processes with a given label.
 - `withName` applies settings to processes with a specific name.
 
+## Pipeline Parameters (params)
+
+Use the `params` scope to define pipeline parameters in the config file. They become available as `params.name` in your pipeline script, and can be overridden at runtime with `--name value` on the command line.
+
+```groovy
+params.alpha = 123
+params.beta = 'string value'
+
+params {
+    gamma = true
+    delta = "computed from ${params.alpha}"
+}
+```
+
+- Command-line values always take priority: `nextflow run main.nf --alpha 456` overrides `params.alpha = 123` from the config.
+- Defaults can reference other params or built-in variables (like `projectDir`), as shown with `delta` above.
+
 ## Profiles
 
 Profiles allow you to define sets of configuration options for different environments. Select a profile at runtime with `-profile`.
@@ -153,6 +170,26 @@ includeConfig 'path/to/cluster.config'
 - `projectDir`: Directory where the main script is located.
 - `launchDir`: Directory where the workflow was launched.
 - `workDir`: Directory for intermediate files.
+
+## Container Engines (Docker & Singularity)
+
+Enable a container engine to run each process inside a container, using the image set by the process `container` directive (see [Directives](Directives.md)). This is what the `docker.enabled` / `docker.enabled = false` lines in the profiles above are switching on and off.
+
+```groovy
+docker {
+    enabled = true
+    runOptions = '-u $(id -u):$(id -g)'   // run container as the host user
+}
+```
+
+```groovy
+singularity {
+    enabled = true
+}
+```
+
+- Only enable one container engine at a time; switch between them per-environment using [profiles](#profiles) (e.g. `docker.enabled = true` locally, `singularity.enabled = true` on a cluster without Docker).
+- `enabled`, `runOptions`, and other engine-specific options can be set with either dot syntax or a block, same as any other config scope.
 
 ## Conda Options
 

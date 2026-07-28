@@ -20,6 +20,8 @@ Declare a variable input. The received value can be any type and is made availab
     }
     ```
 
+**See also:** [Outputs.md `val`](Outputs.md#val), the output-side counterpart for emitting a value from the process body.
+
 ### path
 
 Declare a file input. The value should be a file or collection of files and is staged into the task directory.
@@ -41,6 +43,8 @@ Declare a file input. The value should be a file or collection of files and is s
     }
     ```
 
+**See also:** [Outputs.md `path`](Outputs.md#path), the reverse declaration for emitting files instead of receiving them — shares the same `arity` option. [Directives.md `stageInMode`](Directives.md#stageinmode) controls how these files are staged into the task directory. [Operators.md `splitCsv`/`splitFasta`/`splitFastq`/`splitText`/`splitJson`](Operators.md#splitting-and-parsing-operators) are the usual way to turn a `path` input's contents into a per-record channel.
+
 ### env
 
 Declare an environment variable input. The value should be a string and is exported to the task environment as the given variable name.
@@ -58,6 +62,8 @@ Declare an environment variable input. The value should be a string and is expor
         """
     }
     ```
+
+**See also:** [Outputs.md `env`](Outputs.md#env), the output-side counterpart for capturing an environment variable from the task.
 
 ### stdin
 
@@ -77,6 +83,8 @@ Declare a stdin input. The value should be a string and is provided as standard 
     }
     ```
 
+**See also:** [Outputs.md `stdout`](Outputs.md#stdout), the output-side counterpart for capturing a task's standard output.
+
 ### tuple
 
 Declare a tuple input. Each argument should be an input declaration (`val`, `path`, `env`, or `stdin`). The received value should be a tuple matching the declaration.
@@ -95,3 +103,5 @@ Declare a tuple input. Each argument should be an input declaration (`val`, `pat
         """
     }
     ```
+
+**See also:** [Outputs.md `tuple`](Outputs.md#tuple), the output-side counterpart. [Operators.md `groupTuple`/`join`/`combine`/`cross`](Operators.md#combining-operators) are the main operators for building and manipulating tuple-shaped channels feeding into this declaration.

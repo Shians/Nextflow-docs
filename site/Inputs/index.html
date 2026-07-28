@@ -690,6 +690,7 @@
 </span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="o">}</span>
 </span></code></pre></div></li>
 </ul>
+<p><strong>See also:</strong> <a href="../Outputs/#val">Outputs.md <code>val</code></a>, the output-side counterpart for emitting a value from the process body.</p>
 <h3 id="path">path</h3>
 <p>Declare a file input. The value should be a file or collection of files and is staged into the task directory.</p>
 <ul>
@@ -711,6 +712,7 @@
 </span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="o">}</span>
 </span></code></pre></div></li>
 </ul>
+<p><strong>See also:</strong> <a href="../Outputs/#path">Outputs.md <code>path</code></a>, the reverse declaration for emitting files instead of receiving them — shares the same <code>arity</code> option. <a href="../Directives/#stageinmode">Directives.md <code>stageInMode</code></a> controls how these files are staged into the task directory. <a href="../Operators/#splitting-and-parsing-operators">Operators.md <code>splitCsv</code>/<code>splitFasta</code>/<code>splitFastq</code>/<code>splitText</code>/<code>splitJson</code></a> are the usual way to turn a <code>path</code> input's contents into a per-record channel.</p>
 <h3 id="env">env</h3>
 <p>Declare an environment variable input. The value should be a string and is exported to the task environment as the given variable name.</p>
 <ul>
@@ -727,6 +729,7 @@
 </span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="o">}</span>
 </span></code></pre></div></li>
 </ul>
+<p><strong>See also:</strong> <a href="../Outputs/#env">Outputs.md <code>env</code></a>, the output-side counterpart for capturing an environment variable from the task.</p>
 <h3 id="stdin">stdin</h3>
 <p>Declare a stdin input. The value should be a string and is provided as standard input to the task script. Only one stdin input can be declared per process.</p>
 <ul>
@@ -743,6 +746,7 @@
 </span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="o">}</span>
 </span></code></pre></div></li>
 </ul>
+<p><strong>See also:</strong> <a href="../Outputs/#stdout">Outputs.md <code>stdout</code></a>, the output-side counterpart for capturing a task's standard output.</p>
 <h3 id="tuple">tuple</h3>
 <p>Declare a tuple input. Each argument should be an input declaration (<code>val</code>, <code>path</code>, <code>env</code>, or <code>stdin</code>). The received value should be a tuple matching the declaration.</p>
 <ul>
@@ -760,6 +764,7 @@
 </span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="o">}</span>
 </span></code></pre></div></li>
 </ul>
+<p><strong>See also:</strong> <a href="../Outputs/#tuple">Outputs.md <code>tuple</code></a>, the output-side counterpart. <a href="../Operators/#combining-operators">Operators.md <code>groupTuple</code>/<code>join</code>/<code>combine</code>/<code>cross</code></a> are the main operators for building and manipulating tuple-shaped channels feeding into this declaration.</p>
 
 
 

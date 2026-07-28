@@ -38,7 +38,7 @@ process {
 ```
 
 - Settings in the process definition override config defaults.
-- `withLabel` applies settings to processes with a given label.
+- `withLabel` applies settings to processes with a given label. See [Directives.md `label`](Directives.md#label) for assigning labels to a process.
 - `withName` applies settings to processes with a specific name.
 
 ## Pipeline Parameters (params)
@@ -193,7 +193,7 @@ singularity {
 
 ## Conda Options
 
-Nextflow supports configuring Conda environments for process execution. The `conda` scope in your config file controls how Conda environments are created and managed.
+Nextflow supports configuring Conda environments for process execution. The `conda` scope in your config file controls how Conda environments are created and managed; use it alongside the per-process [`conda` directive](Directives.md#conda), which specifies which packages to install.
 
 Common options include:
 

@@ -21,6 +21,8 @@ Declare a variable output. The argument can be any value and can reference outpu
     }
     ```
 
+**See also:** [Inputs.md `val`](Inputs.md#val), the input-side counterpart for receiving a value into the process body.
+
 ### path
 
 Declare a file output. Receives output files from the task environment matching the given pattern.
@@ -47,6 +49,8 @@ Declare a file output. Receives output files from the task environment matching 
     }
     ```
 
+**See also:** [Inputs.md `path`](Inputs.md#path), the input-side counterpart — shares the same `arity` option. [Directives.md `publishDir`](Directives.md#publishdir)/[`storeDir`](Directives.md#storedir) decide where these files get copied once emitted. [Operators.md `collectFile`](Operators.md#collectfile) is another way to write channel contents to disk, from the channel side rather than the process side.
+
 ### env
 
 Declare an environment variable output. Receives the value of the environment variable from the task environment.
@@ -65,6 +69,8 @@ Declare an environment variable output. Receives the value of the environment va
     }
     ```
 
+**See also:** [Inputs.md `env`](Inputs.md#env), the input-side counterpart for exporting a variable into the task environment.
+
 ### stdout
 
 Declare a stdout output. Receives the standard output of the task script.
@@ -82,6 +88,8 @@ Declare a stdout output. Receives the standard output of the task script.
         """
     }
     ```
+
+**See also:** [Inputs.md `stdin`](Inputs.md#stdin), the input-side counterpart for piping a string into the task as standard input. `eval` below is similar but captures a separate command's output rather than the script's own stdout.
 
 ### eval
 
@@ -118,3 +126,5 @@ Declare a tuple output. Each argument should be an output declaration (`val`, `p
         """
     }
     ```
+
+**See also:** [Inputs.md `tuple`](Inputs.md#tuple), the input-side counterpart. [Operators.md `groupTuple`/`join`/`combine`/`cross`](Operators.md#combining-operators) are the main operators for working with tuple-shaped channels produced here.

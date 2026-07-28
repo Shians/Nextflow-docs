@@ -367,7 +367,7 @@ process cluster_analysis {
 }
 ```
 
-**See also:** Configure default executor in `nextflow.config` rather than per-process for consistency.
+**See also:** Configure default executor in `nextflow.config` rather than per-process for consistency. See [PipelineConfiguration.md "Slurm Profile Example"](PipelineConfiguration.md#slurm-profile-example) for a full cluster-executor config.
 
 ### queue
 
@@ -719,7 +719,7 @@ process smart_retry {
 }
 ```
 
-**See also:** `maxRetries` for retry limits, `maxErrors` for total error thresholds.
+**See also:** `maxRetries` for retry limits, `maxErrors` for total error thresholds. When retrying, [`task.attempt`](ProccessProperties.md#taskattempt) and [`task.previousException`](ProccessProperties.md#taskpreviousexception) are available to adapt behavior on subsequent attempts.
 
 ### maxRetries
 
@@ -782,7 +782,7 @@ process api_with_backoff {
 - `143`: Terminated by signal (SIGTERM)
 - Custom application exit codes
 
-**See also:** `errorStrategy` for enabling retries, `maxErrors` for process-wide error limits.
+**See also:** `errorStrategy` for enabling retries, `maxErrors` for process-wide error limits. See [`task.attempt`](ProccessProperties.md#taskattempt) and [`task.previousTrace`](ProccessProperties.md#taskprevioustrace) for tuning resources per retry, as shown above.
 
 ### maxErrors
 
@@ -915,6 +915,8 @@ process existingEnvExample {
 ```
 
 > See [Conda environments](https://www.nextflow.io/docs/latest/conda.html) for more details.
+
+**See also:** [PipelineConfiguration.md "Conda Options"](PipelineConfiguration.md#conda-options) for pipeline-wide settings (cache dir, mamba, channels) that control how this directive's environments are built.
 
 ### spack
 
@@ -1065,7 +1067,7 @@ process auto_container {
 
 > **Note:** Enable containers in your config with `docker.enabled = true` or `singularity.enabled = true`.
 
-**See also:** `containerOptions` for additional container settings, `conda` for auto-container feature.
+**See also:** `containerOptions` for additional container settings, `conda` for auto-container feature. See [PipelineConfiguration.md "Container Engines"](PipelineConfiguration.md#container-engines-docker-singularity) for enabling Docker/Singularity globally.
 
 ### containerOptions
 
@@ -1407,7 +1409,7 @@ process relative_links {
 }
 ```
 
-**See also:** `stageOutMode` for output file handling, `scratch` for temporary execution directories.
+**See also:** `stageOutMode` for output file handling, `scratch` for temporary execution directories. Applies to files declared via [Inputs.md `path`](Inputs.md#path).
 
 ### stageOutMode
 
@@ -1502,7 +1504,7 @@ process cloud_output {
 }
 ```
 
-**See also:** `publishDir` for specifying output destinations, `stageInMode` for input handling.
+**See also:** `publishDir` for specifying output destinations, `stageInMode` for input handling. Applies to files declared via [Outputs.md `path`](Outputs.md#path).
 
 ### scratch
 
@@ -1701,6 +1703,8 @@ process strict_publish {
 ```
 
 > For more details, see the [Nextflow documentation on publishDir](https://www.nextflow.io/docs/latest/process.html#publishdir).
+
+**See also:** [Outputs.md `path`](Outputs.md#path) declares which files exist; `publishDir` decides where they get copied. `storeDir` below is the alternative for permanent, cached results rather than one-off publishing.
 
 ### storeDir
 
@@ -1968,6 +1972,8 @@ process {
     }
 }
 ```
+
+**See also:** [PipelineConfiguration.md "Process Scope"](PipelineConfiguration.md#process-scope) for the full `withLabel`/`withName` selector syntax used to target labeled processes.
 
 ### tag
 

@@ -957,6 +957,7 @@
 </span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="s2">    &quot;&quot;&quot;</span>
 </span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="o">}</span>
 </span></code></pre></div>
+<p><strong>See also:</strong> <a href="../Directives/#errorstrategy">Directives.md <code>errorStrategy</code></a> and <a href="../Directives/#maxretries"><code>maxRetries</code></a> for configuring the retry behavior that drives <code>task.attempt</code>.</p>
 <h3 id="taskpreviousexception">task.previousException</h3>
 <p><em>New in version 24.10.0</em>
 The exception reported by the previous task attempt.
@@ -1010,6 +1011,7 @@ Available after the script has executed.</p>
 <hr />
 <h2 id="directive-values">Directive Values</h2>
 <p>Beyond the properties above, the resolved value of any directive for the current task is available via <code>task.&lt;directive&gt;</code> (e.g. <code>task.cpus</code>, <code>task.memory</code>, <code>task.attempt</code>-driven values). This is how dynamic directives can reference their own previous or sibling values, as in the <code>task.attempt</code> example above.</p>
+<p><strong>See also:</strong> <a href="../Directives/">Directives.md</a> for the full list of directives whose resolved values are available this way.</p>
 
 
 

@@ -382,7 +382,7 @@ Channel.empty()
 
 ## Combining Operators
 
-These operators combine data from multiple channels. Use them to merge, join, or relate data streams for complex workflows.
+These operators combine data from multiple channels. Use them to merge, join, or relate data streams for complex workflows. `join`, `combine`, and `cross` typically operate on key-based [tuples](Inputs.md#tuple), the same shape used by [`tuple` inputs](Inputs.md#tuple) and [`tuple` outputs](Outputs.md#tuple).
 
 ### mix
 Use `mix` to merge multiple data sources into a single stream for unified processing.
@@ -607,13 +607,13 @@ Channel.of([1, 'A'], [1, 'B'], [2, 'C'])
     .groupTuple(by: 0)
     .view() // Output: [1, ['A', 'B']], [2, ['C']]
 ```
-**See also:** `transpose`. `groupTuple` groups by key, while `transpose` expands nested lists in tuples.
+**See also:** `transpose`. `groupTuple` groups by key, while `transpose` expands nested lists in tuples. Works on the [tuple](Inputs.md#tuple) shape shared with `tuple` inputs/outputs.
 
 ---
 
 ## Splitting and Parsing Operators
 
-These operators split or parse structured data from files or strings into records or chunks for downstream processing.
+These operators split or parse structured data from files or strings into records or chunks for downstream processing. Their source channels are typically built from a [`path` input](Inputs.md#path) (e.g. `Channel.fromPath(...)`).
 
 ### splitText
 Use `splitText` to split multi-line text into lines or chunks of lines.
@@ -801,6 +801,8 @@ Channel.of('apple', 'banana', 'avocado')
     .view { file -> "Wrote ${file.name}" }
 // Writes 'apple\navocado\n' to a.txt, 'banana\n' to b.txt
 ```
+
+**See also:** [Directives.md `publishDir`](Directives.md#publishdir)/[`storeDir`](Directives.md#storedir). `collectFile` writes arbitrary channel items to a file from within the workflow; `publishDir`/`storeDir` instead copy a process's declared [`path` outputs](Outputs.md#path) after the task runs.
 
 ---
 

@@ -7,7 +7,7 @@ Use the navigation menu to explore available topics, including operator document
 ## Pipeline
 - [Configuration](PipelineConfiguration.md)
 
-## Proccesses
+## Process
 - [Inputs](Inputs.md)
 - [Outputs](Outputs.md)
 - [Directives](Directives.md)

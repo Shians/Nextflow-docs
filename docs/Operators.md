@@ -62,24 +62,25 @@ Use `collect` to gather all items into a single collection for summary operation
 - **Input:** A channel emitting any type of item.
 - **Output:** A channel emitting a single list containing all input items.
 - **Arguments:**
-    - `closure` (optional): Custom aggregation logic. If omitted, collects items into a list.
+    - `closure` (optional): Mapping function applied to each item before it is collected. If omitted, items are collected as-is.
+    - `flat` (optional): Flatten nested list structures into individual items (default: `true`).
+    - `sort` (optional): Sort collected items, by natural ordering or a custom closure/comparator (default: `false`).
 
 ```groovy
 Channel.of(1, 2, 3)
     .collect()
     .view() // Output: [1, 2, 3]
+Channel.of('hello', 'ciao', 'bonjour')
+    .collect { v -> v.length() }
+    .view() // Output: [5, 4, 7]
 ```
-**See also:** `toList`. Both aggregate all items into a list, but `collect` is more general and can be customized for other types of aggregation.
+**See also:** `toList`. Both aggregate all items into a list, but `collect` accepts an optional mapping/sorting closure. On an empty channel, `collect` emits nothing while `toList` emits `[]`.
 **Example (difference from `toList`):**
 ```groovy
-// collect can be customized for other aggregations
-Channel.of(1, 2, 3)
-    .collect { acc, val -> acc + val * 2 }
-    .view() // Output: [2, 4, 6]
-// toList always collects all items into a list
-Channel.of(1, 2, 3)
-    .toList()
-    .view() // Output: [1, 2, 3]
+// on an empty channel, collect emits nothing...
+Channel.empty().collect().view() // Output: (nothing emitted)
+// ...but toList always emits a list, even if empty
+Channel.empty().toList().view() // Output: []
 ```
 
 ### flatten
@@ -306,6 +307,77 @@ Channel.of(10, 20, 30, 40)
     .view() // Output: 10, 20
 ```
 
+### distinct
+Use `distinct` to remove consecutively repeated items, such as collapsing runs of identical sorted values.
+
+- **Input:** A channel emitting any type of item.
+- **Output:** A channel emitting items with consecutive duplicates removed.
+- **Arguments:**
+    - `closure` (optional): Transform each item before comparing it to its predecessor.
+
+```groovy
+Channel.of(1, 1, 2, 2, 2, 3, 1, 1)
+    .distinct()
+    .view() // Output: 1, 2, 3, 1
+```
+**See also:** `unique`. `distinct` only collapses duplicates that are adjacent in the stream and can emit immediately, while `unique` removes duplicates across the whole channel and must buffer everything first.
+**Example (difference from `unique`):**
+```groovy
+// distinct only collapses adjacent duplicates
+Channel.of(1, 1, 2, 1)
+    .distinct()
+    .view() // Output: 1, 2, 1
+// unique removes duplicates across the entire channel
+Channel.of(1, 1, 2, 1)
+    .unique()
+    .view() // Output: 1, 2
+```
+
+### unique
+Use `unique` to remove all duplicate items from a channel, such as deduplicating sample IDs regardless of order.
+
+- **Input:** A channel emitting any type of item.
+- **Output:** A channel emitting only the first occurrence of each distinct item.
+- **Arguments:**
+    - `closure` (optional): Transform each item before evaluating uniqueness.
+
+```groovy
+Channel.of(1, 1, 2, 2, 2, 3, 1)
+    .unique()
+    .view() // Output: 1, 2, 3
+```
+
+### first
+Use `first` to grab a single item from a channel, such as picking a reference sample or the first match.
+
+- **Input:** A channel emitting any type of item.
+- **Output:** A channel emitting the first item, or the first item matching a condition.
+- **Arguments:**
+    - `condition` (optional): Value, regex, type, or predicate closure used to select the first matching item. If omitted, emits the very first item.
+
+```groovy
+Channel.of(1, 2, 3)
+    .first()
+    .view() // Output: 1
+Channel.of(1, 2, 3, 4)
+    .first { it > 2 }
+    .view() // Output: 3
+```
+
+### ifEmpty
+Use `ifEmpty` to supply a fallback value when a channel might not emit anything, such as defaulting an optional input.
+
+- **Input:** A channel emitting any type of item.
+- **Output:** The source channel unchanged, or a channel emitting a single default value if the source was empty.
+- **Arguments:**
+    - `value` (required): Default value (or closure) to emit if the source channel is empty.
+
+```groovy
+Channel.empty()
+    .ifEmpty('none found')
+    .view() // Output: none found
+```
+
 ---
 
 ## Combining Operators
@@ -412,7 +484,8 @@ Use `join` to enrich or correlate data from two sources, such as joining metadat
 - **Output:** A channel emitting joined tuples for each matching key, similar to a database join.
 - **Arguments:**
     - `other` (required): The other channel to join with.
-    - `by` (required): Index or closure to specify the key for matching.
+    - `by` (optional): Index, or list of indices, to use as the matching key (default: `0`).
+    - `remainder` (optional): If `true`, emit unmatched items at the end instead of discarding them (default: `false`).
 
 ```groovy
 Channel.of([1, 'foo'], [2, 'bar'])
@@ -485,8 +558,7 @@ Use `buffer` to batch items for grouped processing, such as running jobs in chun
 - **Input:** A channel emitting any type of item.
 - **Output:** A channel emitting lists of items, each list containing up to the specified batch size or meeting a condition.
 - **Arguments:**
-    - `size` (optional): Maximum number of items per batch.
-    - `timeout` (optional): Maximum time (in milliseconds or as a duration string, e.g. `'5s'`) to wait before emitting a batch.
+    - `size` (optional): Number of items per batch.
     - `remainder` (optional): If `true`, emit any remaining items as a partial batch at the end (default: `false`).
     - `skip` (optional): Number of items to skip before starting the next batch (for sliding windows).
     - `openingCondition` (optional): Start a new batch when this condition is met (can be a value, regex, type, or closure).
@@ -495,6 +567,9 @@ Use `buffer` to batch items for grouped processing, such as running jobs in chun
 ```groovy
 Channel.of(1, 2, 3, 4, 5)
     .buffer(size: 2)
+    .view() // Output: [1, 2], [3, 4] — trailing [5] is discarded
+Channel.of(1, 2, 3, 4, 5)
+    .buffer(size: 2, remainder: true)
     .view() // Output: [1, 2], [3, 4], [5]
 ```
 **See also:** `collate`. `buffer` is more flexible and supports batching by size, time, or custom conditions.
@@ -530,7 +605,7 @@ Use `groupTuple` to group related data by a common identifier, such as grouping 
 ```groovy
 Channel.of([1, 'A'], [1, 'B'], [2, 'C'])
     .groupTuple(by: 0)
-    .view() // Output: [1, [[1, 'A'], [1, 'B']]], [2, [[2, 'C']]]
+    .view() // Output: [1, ['A', 'B']], [2, ['C']]
 ```
 **See also:** `transpose`. `groupTuple` groups by key, while `transpose` expands nested lists in tuples.
 
@@ -707,29 +782,24 @@ These operators handle the collection and writing of data to files. Use them to 
 Use `collectFile` to save all channel items to a file for reporting, archiving, or downstream tools.
 
 - **Input:** A channel emitting any type of item.
-- **Output:** A file containing all items, typically one per line or as specified.
+- **Output:** A file (or files) containing all items.
 - **Arguments:**
-    - `name` (required): Output file name.
-    - `mode` (optional): File write mode (e.g., 'overwrite', 'append').
+    - `name` (optional): Output file name. Required unless a grouping closure is given.
+    - `newLine` (optional): Append a newline after each item (default: `false`).
+    - `keepHeader` (optional): Keep the header line from the first file when concatenating files that share a header (default: `false`).
+    - `sort` (optional): Sort items before collecting (default: `false`).
+    - `storeDir` (optional): Directory to publish the collected file(s) to.
 
 ```groovy
 Channel.of('foo', 'bar')
-    .collectFile(name: 'output.txt')
-// Writes 'foo' and 'bar' to output.txt
-```
+    .collectFile(name: 'output.txt', newLine: true)
+// Writes 'foo\nbar\n' to output.txt
 
-### save
-Use `save` to persist results or logs to a specific file location for reproducibility or sharing.
-
-- **Input:** A channel emitting any type of item.
-- **Output:** A file at the specified path containing all items.
-- **Arguments:**
-    - `path` (required): Output file path.
-
-```groovy
-Channel.of(1, 2, 3)
-    .save('numbers.txt')
-// Writes 1, 2, 3 to numbers.txt
+// Group into multiple files with a closure: [filename, content]
+Channel.of('apple', 'banana', 'avocado')
+    .collectFile { item -> ["${item[0]}.txt", item + '\n'] }
+    .view { file -> "Wrote ${file.name}" }
+// Writes 'apple\navocado\n' to a.txt, 'banana\n' to b.txt
 ```
 
 ---
@@ -743,11 +813,15 @@ Use `count` to determine the size of a dataset or the number of results produced
 
 - **Input:** A channel emitting any type of item.
 - **Output:** A channel emitting a single integer representing the number of items received.
-- **Arguments:** None.
+- **Arguments:**
+    - `filter` (optional): Only count items matching this value, regex, type, or predicate closure. If omitted, counts all items.
 
 ```groovy
 Channel.of(1, 2, 3)
     .count()
+    .view() // Output: 3
+Channel.of(4, 1, 7, 1, 1)
+    .count(1)
     .view() // Output: 3
 ```
 
@@ -790,19 +864,6 @@ Channel.of(5, 2, 8)
     .view() // Output: 8
 ```
 
-### mean
-Use `mean` to calculate the average of a set of values, such as mean coverage or expression.
-
-- **Input:** A channel emitting numeric items.
-- **Output:** A channel emitting the average (mean) value of all items.
-- **Arguments:** None.
-
-```groovy
-Channel.of(2, 4, 6)
-    .mean()
-    .view() // Output: 4.0
-```
-
 ---
 
 ## Testing and Debugging Operators
@@ -828,4 +889,82 @@ Use `subscribe` to perform actions on emitted items.
 Channel.of(1, 2, 3)
     .subscribe { println "Item: $it" }
 // Output: Item: 1\nItem: 2\nItem: 3
+```
+
+---
+
+## Channel Assignment and Routing Operators
+
+These operators assign a channel to a variable or route items from one channel into multiple downstream channels.
+
+### set
+Use `set` to assign a channel to a named variable, typically at the end of a chain of operators for readability.
+
+- **Input:** Any channel.
+- **Output:** None — assigns the channel to the given variable name.
+- **Arguments:**
+    - `identifier` (required): Variable name to assign the channel to.
+
+```groovy
+Channel.of(10, 20, 30)
+    .map { it * 2 }
+    .set { doubled }
+
+doubled.view() // Output: 20, 40, 60
+```
+**See also:** Plain assignment (e.g. `doubled = Channel.of(...).map { ... }`). `set` is a stylistic alternative that reads naturally at the end of a long operator chain.
+
+### branch
+Use `branch` to route each item from a channel into exactly one of several output channels, such as splitting samples by type.
+
+- **Input:** A channel emitting any type of item.
+- **Output:** Multiple channels, one per label, accessed as properties of the object passed to `set`.
+- **Arguments:**
+    - `closure` (required): A closure defining `label: condition` pairs. The first matching condition wins; use `true` as a final catch-all.
+
+```groovy
+Channel.of(1, 2, 3, 40, 50)
+    .branch { v ->
+        small: v < 10
+        large: true
+    }
+    .set { result }
+
+result.small.view() // Output: 1, 2, 3
+result.large.view() // Output: 40, 50
+```
+**See also:** `multiMap`. `branch` sends each item to exactly one output channel, while `multiMap` sends every item to every output channel, each with its own transformation.
+
+### multiMap
+Use `multiMap` to split one channel into several parallel channels, each with its own transformation, such as separating a sample record into ID and file channels.
+
+- **Input:** A channel emitting any type of item.
+- **Output:** Multiple channels, one per label, accessed as properties of the object passed to `set`.
+- **Arguments:**
+    - `closure` (required): A closure defining `label: expression` pairs, one per output channel.
+
+```groovy
+Channel.of(1, 2, 3)
+    .multiMap { v ->
+        original: v
+        squared: v * v
+    }
+    .set { result }
+
+result.original.view() // Output: 1, 2, 3
+result.squared.view()  // Output: 1, 4, 9
+```
+**Example (difference from `branch`):**
+```groovy
+// branch: each item goes to exactly one output channel
+Channel.of(1, 20)
+    .branch { v -> small: v < 10; large: true }
+    .set { r1 }
+// r1.small: 1  |  r1.large: 20
+
+// multiMap: every item goes to every output channel, transformed differently
+Channel.of(1, 20)
+    .multiMap { v -> asIs: v; doubled: v * 2 }
+    .set { r2 }
+// r2.asIs: 1, 20  |  r2.doubled: 2, 40
 ```

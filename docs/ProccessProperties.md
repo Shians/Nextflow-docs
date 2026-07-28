@@ -185,3 +185,9 @@ process checkExit {
     """
 }
 ```
+
+---
+
+## Directive Values
+
+Beyond the properties above, the resolved value of any directive for the current task is available via `task.<directive>` (e.g. `task.cpus`, `task.memory`, `task.attempt`-driven values). This is how dynamic directives can reference their own previous or sibling values, as in the `task.attempt` example above.

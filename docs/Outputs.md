@@ -26,9 +26,9 @@ Declare a variable output. The argument can be any value and can reference outpu
 Declare a file output. Receives output files from the task environment matching the given pattern.
 
 - **Syntax:** `path(pattern, [options])`
-- **Output:** File(s) matching the pattern.
+- **Output:** File(s) matching the pattern. Multiple patterns can be combined with `:` (e.g., `'*.bam:*.bai'`); the union of matches is collected.
 - **Options:**
-    - `arity`: Number or range of expected files (e.g., `1`, `1..*`). Task fails if invalid.
+    - `arity`: Number or range of expected files (e.g., `1`, `1..*`). Task fails if invalid. If `1`, a single file is emitted; otherwise a list is always emitted, even for one file. Without `arity`, Nextflow emits a single file or a list depending on how many files are produced at runtime — this can lead to an output channel with a mix of files and lists, so set `arity` explicitly when the count matters.
     - `followLinks`: Return target files for symlinks (default: true).
     - `glob`: Interpret name as glob pattern (default: true).
     - `hidden`: Include hidden files (default: false).
@@ -85,7 +85,7 @@ Declare a stdout output. Receives the standard output of the task script.
 
 ### eval
 
-Declare an eval output. Receives the standard output of the given command, executed in the task environment after the task script.
+Declare an eval output. Receives the standard output of the given command, executed in the task environment after the task script. If the command fails, the task also fails.
 
 - **Syntax:** `eval(command)`
 - **Output:** String (stdout of command).

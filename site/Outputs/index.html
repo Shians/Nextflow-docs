@@ -713,9 +713,9 @@
 <p>Declare a file output. Receives output files from the task environment matching the given pattern.</p>
 <ul>
 <li><strong>Syntax:</strong> <code>path(pattern, [options])</code></li>
-<li><strong>Output:</strong> File(s) matching the pattern.</li>
+<li><strong>Output:</strong> File(s) matching the pattern. Multiple patterns can be combined with <code>:</code> (e.g., <code>'*.bam:*.bai'</code>); the union of matches is collected.</li>
 <li><strong>Options:</strong><ul>
-<li><code>arity</code>: Number or range of expected files (e.g., <code>1</code>, <code>1..*</code>). Task fails if invalid.</li>
+<li><code>arity</code>: Number or range of expected files (e.g., <code>1</code>, <code>1..*</code>). Task fails if invalid. If <code>1</code>, a single file is emitted; otherwise a list is always emitted, even for one file. Without <code>arity</code>, Nextflow emits a single file or a list depending on how many files are produced at runtime — this can lead to an output channel with a mix of files and lists, so set <code>arity</code> explicitly when the count matters.</li>
 <li><code>followLinks</code>: Return target files for symlinks (default: true).</li>
 <li><code>glob</code>: Interpret name as glob pattern (default: true).</li>
 <li><code>hidden</code>: Include hidden files (default: false).</li>
@@ -768,7 +768,7 @@
 </span></code></pre></div></li>
 </ul>
 <h3 id="eval">eval</h3>
-<p>Declare an eval output. Receives the standard output of the given command, executed in the task environment after the task script.</p>
+<p>Declare an eval output. Receives the standard output of the given command, executed in the task environment after the task script. If the command fails, the task also fails.</p>
 <ul>
 <li><strong>Syntax:</strong> <code>eval(command)</code></li>
 <li><strong>Output:</strong> String (stdout of command).</li>

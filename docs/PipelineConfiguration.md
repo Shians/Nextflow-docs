@@ -90,10 +90,11 @@ profiles {
   ```
   nextflow run main.nf -profile slurm
   ```
-- To activate multiple profiles (settings are merged in order):
+- To activate multiple profiles:
   ```
   nextflow run main.nf -profile test,slurm
   ```
+  Profiles are merged in the order they are **defined in the config file**, not the order listed on the command line — so put later-wins profiles last in `profiles { }`, regardless of `-profile` argument order.
 
 **Notes:**
 - Profile settings override the base configuration.

@@ -810,9 +810,10 @@
 <li>To activate a single profile:
   <div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>nextflow run main.nf -profile slurm
 </span></code></pre></div></li>
-<li>To activate multiple profiles (settings are merged in order):
+<li>To activate multiple profiles:
   <div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>nextflow run main.nf -profile test,slurm
-</span></code></pre></div></li>
+</span></code></pre></div>
+  Profiles are merged in the order they are <strong>defined in the config file</strong>, not the order listed on the command line — so put later-wins profiles last in <code>profiles { }</code>, regardless of <code>-profile</code> argument order.</li>
 </ul>
 <p><strong>Notes:</strong>
 - Profile settings override the base configuration.

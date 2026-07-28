@@ -228,7 +228,7 @@ process compute_optimized {
 }
 ```
 
-> **Note:** Machine type names are cloud provider-specific. This directive is only used by cloud executors.
+> **Note:** Machine type names are cloud provider-specific. This directive is only used by cloud executors, and when set, it overrides the `cpus` and `memory` directives for that process.
 
 **See also:** `cpus` and `memory` for executor-agnostic resource requests.
 
@@ -239,6 +239,7 @@ Use `resourceLimits` to set maximum resource constraints that apply across diffe
 **Arguments:**
 - `cpus`: Maximum CPU cores
 - `memory`: Maximum memory
+- `disk`: Maximum disk space
 - `time`: Maximum runtime
 
 ```groovy
@@ -277,7 +278,7 @@ process org_compliant {
 
 ### arch
 
-Use `arch` to specify the CPU architecture and optionally the microarchitecture for process execution. This ensures processes run on compatible hardware and can enable architecture-specific optimizations.
+Use `arch` to specify the CPU architecture and optionally the microarchitecture for process execution. This is used by the `spack` directive to build microarchitecture-optimized software, and by the Wave container service to build containers for the given architecture — it does not perform general node/hardware selection (use `machineType` for that).
 
 **Arguments:**
 - First argument: Architecture string (e.g., `'linux/x86_64'`, `'linux/arm64'`)
@@ -328,7 +329,7 @@ Directives that affect how and when processes are executed.
 
 Use `executor` to override the default executor for a specific process. This allows you to run different processes on different compute platforms within the same pipeline.
 
-**Common executors:** `local`, `sge`, `slurm`, `pbs`, `lsf`, `awsbatch`, `google-lifesciences`, `k8s`
+**Common executors:** `local`, `sge`, `slurm`, `pbs`, `lsf`, `awsbatch`, `azurebatch`, `google-batch`, `k8s`
 
 ```groovy
 process local_preprocessing {
@@ -541,12 +542,14 @@ process adaptive_array {
 ```
 
 > **Experimental feature:** Behavior may vary between executors. Job arrays can significantly reduce scheduler overhead for pipelines with many small tasks.
+>
+> **Gotcha:** Because a job array is submitted as a single job, directives like `cpus`, `memory`, `disk`, `queue`, `machineType`, `resourceLabels`, `resourceLimits`, `time`, `clusterOptions`, and `accelerator` must be uniform across every task in the array — dynamic per-attempt values (e.g. `memory { 4.GB * task.attempt }`) won't vary by task within the same array.
 
 **See also:** Your cluster documentation for job array limits and best practices.
 
 ### maxForks
 
-Use `maxForks` to limit the number of process instances that can run in parallel. This is useful for rate-limiting, controlling resource usage, or when accessing shared resources with limited capacity.
+Use `maxForks` to limit the number of process instances that can run in parallel. This is useful for rate-limiting, controlling resource usage, or when accessing shared resources with limited capacity. By default, it is equal to the number of available CPU cores minus 1.
 
 ```groovy
 process database_query {
@@ -652,7 +655,7 @@ Use `errorStrategy` to control how the pipeline responds when a process task fai
 **Available strategies:**
 - `terminate` (default): Stop the entire pipeline immediately when a task fails
 - `finish`: Wait for running tasks to complete, then stop the pipeline
-- `ignore`: Continue the pipeline, skip failed tasks
+- `ignore`: Continue the pipeline, skip failed tasks. The pipeline still exits `0` unless `workflow.failOnIgnore = true` is set in the config, in which case it reports a non-zero exit code
 - `retry`: Automatically retry failed tasks up to `maxRetries` times
 
 ```groovy
@@ -977,9 +980,6 @@ process pipeline_step {
     module 'bwa/0.7.17'
     module 'samtools/1.14'
 
-    // Or as a list
-    // module 'bwa/0.7.17', 'samtools/1.14'
-
     script:
     """
     bwa mem genome.fa reads.fq | samtools sort -o aligned.bam
@@ -1039,7 +1039,6 @@ process python_script {
 ```groovy
 process multi_registry {
     container 'docker://ubuntu:20.04'          // Docker Hub
-    // container 'shub://user/repo'            // Singularity Hub
     // container 'library://alpine:latest'     // Sylabs Cloud Library
     // container 'oras://ghcr.io/user/image'   // GitHub Container Registry
 
@@ -1299,7 +1298,7 @@ process db_query {
 nextflow secrets set MY_API_KEY
 ```
 
-> **Note:** Secrets are not logged or displayed in console output. Supported by local executor and most cloud executors (AWS Batch, Google Cloud, Azure Batch, Kubernetes).
+> **Note:** Secrets are not logged or displayed in console output. Only supported by local and grid executors (e.g., SLURM, Grid Engine). AWS Batch supports secrets only when deployed via Seqera Platform; other cloud executors are not supported.
 
 **See also:** Nextflow secrets documentation for setting up secret stores.
 
@@ -1805,7 +1804,7 @@ Use `cache` to control how Nextflow determines if a process needs to be re-execu
 - `true` (default): Cache based on inputs, parameters, and file metadata
 - `false`: Disable caching, always re-execute
 - `'deep'`: Include file content in cache key (slower but more accurate)
-- `'lenient'`: Minimal caching, only check task name and inputs
+- `'lenient'`: Only check input file name and size (not timestamp) — a workaround for shared filesystems with inconsistent timestamps
 
 ```groovy
 process alwaysRun {
@@ -1875,8 +1874,8 @@ process lenient_cache {
 
     script:
     """
-    # Minimal cache checking - faster but may miss changes
-    # Only checks task inputs, not file metadata
+    # Only checks input file name and size, not timestamp
+    # Useful on shared filesystems where timestamps are unreliable
     generate_output.sh ${parameter} > output.txt
     """
 }
@@ -2014,6 +2013,54 @@ executor {
     jobName = { "${task.process} ${task.tag}" }
 }
 ```
+
+### ext
+
+Use `ext` as a namespace for custom, user-defined process directives — most commonly `ext.args` for passing extra command-line arguments into a script without hardcoding them.
+
+```groovy
+process mapping {
+    container "biocontainers/star:${task.ext.version}"
+    ext version: '2.7.10b', args: '--outSAMtype BAM SortedByCoordinate'
+
+    input:
+    path genome
+    tuple val(sample_id), path(reads)
+
+    script:
+    """
+    STAR --genomeDir ${genome} --readFilesIn ${reads} ${task.ext.args ?: ''}
+    """
+}
+```
+
+`ext` values can also be set per-process in `nextflow.config` (the common nf-core pattern), which lets you override arguments without touching the pipeline code:
+```groovy
+process {
+    withName: mapping {
+        ext.args = '--outSAMtype BAM SortedByCoordinate --twopassMode Basic'
+    }
+}
+```
+
+### resourceLabels
+
+Use `resourceLabels` to attach custom name-value tags to the cloud compute resource used for a task — useful for cost tracking and attribution.
+
+```groovy
+process billed_task {
+    resourceLabels region: 'us-east-1', team: 'genomics'
+
+    script:
+    """
+    your_command --here
+    """
+}
+```
+
+> **Note:** Supported by AWS Batch, Azure Batch, Google Cloud Batch, and Kubernetes. Check your cloud provider's tag naming limits before using this directive.
+
+**See also:** `label` for pipeline-level process labels used in config selectors.
 
 **Example: Use tag with process properties**
 ```groovy
@@ -2263,4 +2310,31 @@ process sayHello {
     """
 }
 ```
+
+### fair
+
+Use `fair` to guarantee that a process emits its outputs in the same order its inputs were received, even though tasks run concurrently and may finish out of order.
+
+```groovy
+process foo {
+    fair true
+
+    input:
+    val x
+    output:
+    tuple val(task.index), val(x)
+
+    script:
+    """
+    sleep \$((RANDOM % 3))
+    """
+}
+
+workflow {
+    Channel.of('A', 'B', 'C', 'D') | foo | view
+}
+// Output is always in order: [1, A], [2, B], [3, C], [4, D]
+```
+
+Without `fair`, faster tasks can emit before slower ones that were submitted earlier, so output order is not guaranteed.
 

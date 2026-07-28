@@ -589,6 +589,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#directive-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      Directive Values
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -836,6 +845,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#directive-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      Directive Values
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -989,6 +1007,9 @@ Available after the script has executed.</p>
 </span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="s2">    &quot;&quot;&quot;</span>
 </span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="o">}</span>
 </span></code></pre></div>
+<hr />
+<h2 id="directive-values">Directive Values</h2>
+<p>Beyond the properties above, the resolved value of any directive for the current task is available via <code>task.&lt;directive&gt;</code> (e.g. <code>task.cpus</code>, <code>task.memory</code>, <code>task.attempt</code>-driven values). This is how dynamic directives can reference their own previous or sibling values, as in the <code>task.attempt</code> example above.</p>
 
 
 
